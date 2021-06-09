@@ -5,6 +5,17 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_2">#FBFBFC</color>
+
+    <color name="button_color">#8C88F8</color>
+    <color name="text_color">#5E6988</color>
+    <color name="search_bg_color">#F3F5F6</color>
+    <color name="card_bg_color">#F1F2F5</color>
+    <color name="image_bg_color">#00000012</color>
+    <color name="toolbarBackgroundColor">@color/white</color>
+    <color name="ripple_color_grey">#593B3B3B</color>
+
 </resources>

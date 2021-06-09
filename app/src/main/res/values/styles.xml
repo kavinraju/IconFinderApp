@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- CollapsingToolbar Title-->
+    <style name="TextAppearance.App.CollapsingToolbar.Expanded" parent="TextAppearance.MaterialComponents.Headline4">
+    <item name="android:textColor">@color/black</item>
+    <item name="android:textStyle">bold</item>
+</style>
+
+    <style name="TextAppearance.App.CollapsingToolbar.Collapsed" parent="TextAppearance.MaterialComponents.Subtitle1">
+    <item name="android:textColor">@color/black</item>
+    <item name="android:textStyle">normal</item>
+    </style>
+
+    <!-- MaterialToolBarTheme -->
+    <style name="MaterialToolBarTheme" parent="@style/Widget.MaterialComponents.ActionBar.PrimarySurface">
+        <item name="colorControlHighlight">@color/ripple_color_grey</item>
+    </style>
+
+    <!-- TabLayout -->
+    <style name="Widget.App.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabIndicator">@drawable/tab_indicator</item>
+        <item name="tabIndicatorFullWidth">false</item>
+        <item name="tabMode">auto</item>
+        <item name="layout_collapseMode">pin</item>
+        <item name="tabIndicatorHeight">@dimen/tab_indicator_height</item>
+        <item name="android:background">@color/white</item>
+        <item name="tabPaddingBottom">-15dp</item>
+
+        <item name="tabTextColor">@color/text_color</item>
+        <item name="tabSelectedTextColor">@color/text_color</item>
+    </style>
+
+    <style name="Widget.App.TabLayout.Title" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="titleTextStyle">@style/TextAppearance.MaterialComponents.Headline6</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+</resources>

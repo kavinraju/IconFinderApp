@@ -1,3 +1,9 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="dimen_0dp">0dp</dimen>
+
+    <dimen name="tab_indicator_radius">1dp</dimen>
+    <dimen name="tab_indicator_height">2dp</dimen>
+    <dimen name="tab_layout_elevation">4dp</dimen>
+
 </resources>

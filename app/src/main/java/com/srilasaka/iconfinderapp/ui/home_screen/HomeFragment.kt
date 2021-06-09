@@ -1,0 +1,61 @@
+package com.srilasaka.iconfinderapp.ui.home_screen
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayoutMediator
+import com.srilasaka.iconfinderapp.R
+import com.srilasaka.iconfinderapp.databinding.FragmentHomeBinding
+
+/**
+ * A simple [Fragment] subclass as the default destination in the navigation.
+ */
+class HomeFragment : Fragment() {
+
+    /**
+     * Declaring the UI Components
+     */
+    private var _binding: FragmentHomeBinding? = null
+
+    /**
+     * Declaring required objects
+     */
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+    private lateinit var viewPagerAdapter: HomeScreenViewPagerAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Initialise ViewPagerAdapter and set up the TabLayout
+        viewPagerAdapter = HomeScreenViewPagerAdapter(this)
+        binding.viewPagerHomeScreen.adapter = viewPagerAdapter
+        TabLayoutMediator(binding.tabLayoutHome, binding.viewPagerHomeScreen) { tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.tab_1_icon_set)
+                1 -> getString(R.string.tab_2_icons)
+                else -> ""
+            }
+        }.attach()
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}

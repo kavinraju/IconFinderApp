@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IconFinderApp">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.HomeActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.IconFinderApp.NoActionBar">
+            android:theme="@style/Theme.IconFinderApp.HomeActivity.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
