@@ -14,4 +14,17 @@
     <string name="icon_set">Icon Set</string>
     <string name="tab_1_icon_set">@string/icon_set</string>
     <string name="tab_2_icons">@string/icons</string>
+    <string name="sample_string_foods">Foods</string>
+    <string name="sample_string_price_20">$20</string>
+    <string name="type">Type:</string>
+    <string name="sample_string_fill">Fill</string>
+    <string name="sample_string_james_wan">James Wan</string>
+    <string name="license_type">License Type:</string>
+    <string name="sample_string_creative_commons_license">Creative Commons License</string>
+    <string name="this_is_the_subscription_type_premium_or_free">This is the subscription type - premium or free</string>
+    <string name="icon">Icon</string>
+    <string name="sample_string_Burger">Burger</string>
+    <string name="sample_string_png_svg">png, svg</string>
+    <string name="no_attribution">No Attribution</string>
+    <string name="download">Download</string>
 </resources>
