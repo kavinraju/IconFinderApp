@@ -11,12 +11,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_4dp"
+        android:clickable="true"
+        android:focusable="true"
         app:cardCornerRadius="@dimen/card_radius_icons_outer"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/card_bg_color">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -57,7 +60,7 @@
                     android:contentDescription="@string/icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/icon_free" />
+                    app:srcCompat="@drawable/icon_burger" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -67,9 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_8dp"
-                android:background="@color/button_color"
                 android:text="@string/download"
-                android:textAllCaps="false"
                 app:icon="@drawable/icon_download"
                 app:layout_constraintEnd_toEndOf="@id/material_card_view_icons_inner"
                 app:layout_constraintStart_toStartOf="@id/material_card_view_icons_inner"

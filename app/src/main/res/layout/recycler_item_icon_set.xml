@@ -14,8 +14,8 @@
             android:id="@+id/iv_icon_set_premium_free"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/dimen_2dp"
             android:contentDescription="@string/this_is_the_subscription_type_premium_or_free"
+            android:elevation="@dimen/dimen_2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/icon_premium" />
@@ -25,13 +25,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_8dp"
+            android:clickable="true"
+            android:focusable="true"
             app:cardBackgroundColor="@color/card_bg_color"
             app:cardCornerRadius="@dimen/card_radius_icon_set"
             app:cardUseCompatPadding="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@color/card_bg_color">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
