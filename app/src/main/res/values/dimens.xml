@@ -13,15 +13,15 @@
     <dimen name="dimen_8dp">8dp</dimen>
     <dimen name="dimen_2dp">2dp</dimen>
     <dimen name="dimen_20dp">20dp</dimen>
-    <dimen name="card_radius_icons_outer">20.07dp</dimen>
-    <dimen name="card_radius_icons_inner">7.54dp</dimen>
+    <dimen name="card_radius_icons_outer">20dp</dimen>
+    <dimen name="card_radius_icons_inner">8dp</dimen>
     <dimen name="dimen_56dp">56dp</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
-    <dimen name="dimen_20sp">20</dimen>
+    <dimen name="dimen_20sp">20sp</dimen>
     <dimen name="card_width_material_card_view_icons_inner">123dp</dimen>
     <dimen name="card_height_material_card_view_icons_inner">74dp</dimen>
     <dimen name="dimen_32dp">32dp</dimen>
 
-    <item name="dimen_20_49sp" type="dimen" format="float">20.49sp</item>
-    <item name="card_radius_icon_set" type="dimen" format="float">24.53dp</item>
+    <dimen name="dimen_20_49sp">21sp</dimen>
+    <dimen name="card_radius_icon_set">25dp</dimen>
 </resources>
