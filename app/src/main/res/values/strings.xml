@@ -27,4 +27,7 @@
     <string name="sample_string_png_svg">png, svg</string>
     <string name="no_attribution">No Attribution</string>
     <string name="download">Download</string>
+    <string name="retry">Retry</string>
+    <string name="no_data">No data!</string>
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>

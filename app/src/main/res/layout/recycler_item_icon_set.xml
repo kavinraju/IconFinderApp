@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="model"
+            type="com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +22,7 @@
             android:elevation="@dimen/dimen_2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:loadSubscriptionTypeIcon="@{model.is_premium()}"
             app:srcCompat="@drawable/icon_premium" />
 
         <com.google.android.material.card.MaterialCardView
@@ -47,25 +52,27 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dimen_16dp"
                     android:fontFamily="@font/montserrat_medium"
-                    android:text="@string/sample_string_foods"
+                    android:text="@{model.name}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_20_49sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@id/tv_icon_set_price"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/sample_string_foods" />
 
                 <TextView
                     android:id="@+id/tv_icon_set_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
-                    android:text="@string/sample_string_price_20"
+                    android:text="@{model.price}"
                     android:textColor="@color/purple"
                     android:textSize="@dimen/dimen_20_49sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/sample_string_price_20" />
 
                 <TextView
                     android:id="@+id/tv_icon_set_type_title"
@@ -86,11 +93,12 @@
                     android:layout_marginStart="@dimen/dimen_4dp"
                     android:layout_marginEnd="@dimen/dimen_16dp"
                     android:fontFamily="@font/montserrat_medium"
-                    android:text="@string/sample_string_fill"
+                    android:text="@{model.type}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/dimen_16sp"
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_icon_set_type_title"
-                    app:layout_constraintStart_toEndOf="@id/tv_icon_set_type_title" />
+                    app:layout_constraintStart_toEndOf="@id/tv_icon_set_type_title"
+                    tools:text="@string/sample_string_fill" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/image_button_info"
@@ -108,21 +116,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_4dp"
                     android:fontFamily="@font/montserrat_medium"
-                    android:text="@string/sample_string_james_wan"
+                    android:text="@{model.author_name}"
                     android:textAlignment="textEnd"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/dimen_16sp"
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_icon_set_type_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/guideline_vertical_1"
-                    app:layout_constraintTop_toBottomOf="@id/tv_icon_set_price" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_icon_set_price"
+                    tools:text="@string/sample_string_james_wan" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline_vertical_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.5" />
+                    app:layout_constraintGuide_percent="0.45"/>
 
                 <TextView
                     android:id="@+id/tv_icon_set_license_type_title"
@@ -134,7 +143,7 @@
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/dimen_14sp"
                     app:layout_constraintStart_toStartOf="@id/tv_icon_set_name"
-                    app:layout_constraintTop_toBottomOf="@id/tv_icon_set_type" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_icon_set_creator_name" />
 
                 <TextView
                     android:id="@+id/tv_icon_set_license_type"
@@ -142,12 +151,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_4dp"
                     android:fontFamily="@font/montserrat_medium"
-                    android:text="@string/sample_string_creative_commons_license"
+                    android:text="@{model.license_name}"
                     android:textColor="@color/purple"
                     android:textSize="@dimen/dimen_14sp"
+
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_icon_set_license_type_title"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/tv_icon_set_license_type_title" />
+                    app:layout_constraintStart_toEndOf="@id/tv_icon_set_license_type_title"
+                    tools:text="@string/sample_string_creative_commons_license" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>

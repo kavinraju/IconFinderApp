@@ -24,4 +24,5 @@
 
     <dimen name="dimen_20_49sp">21sp</dimen>
     <dimen name="card_radius_icon_set">25dp</dimen>
+    <dimen name="dimen_32sp">32sp</dimen>
 </resources>
