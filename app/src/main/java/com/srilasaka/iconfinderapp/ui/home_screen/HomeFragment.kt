@@ -1,11 +1,12 @@
 package com.srilasaka.iconfinderapp.ui.home_screen
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentHomeBinding
@@ -27,13 +28,24 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var viewPagerAdapter: HomeScreenViewPagerAdapter
+    private lateinit var viewModel: HomeFragmentViewModel
+    /*private val viewModel: HomeFragmentViewModel by lazy {
+        val application = requireNotNull(this.activity).application
+        val factory = HomeFragmentViewModel.Factory(application)
+        ViewModelProvider(this, factory).get(HomeFragmentViewModel::class.java)
+    }*/
+
+    private val TAG: String? = HomeFragment::class.simpleName
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val application = requireNotNull(this.activity).application
+        val factory = HomeFragmentViewModel.Factory(application)
+        viewModel = ViewModelProvider(this, factory).get(HomeFragmentViewModel::class.java)
         return binding.root
 
     }
@@ -46,8 +58,14 @@ class HomeFragment : Fragment() {
         binding.viewPagerHomeScreen.adapter = viewPagerAdapter
         TabLayoutMediator(binding.tabLayoutHome, binding.viewPagerHomeScreen) { tab, position ->
             tab.text = when (position) {
-                0 -> getString(R.string.tab_1_icon_set)
-                1 -> getString(R.string.tab_2_icons)
+                0 -> {
+                    Log.d(TAG, "tab_1_icon_set")
+                    getString(R.string.tab_1_icon_set)
+                }
+                1 -> {
+                    Log.d(TAG, "tab_2_icons")
+                    getString(R.string.tab_2_icons)
+                }
                 else -> ""
             }
         }.attach()
