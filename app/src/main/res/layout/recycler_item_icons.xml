@@ -33,9 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/card_bg_color"
-            android:paddingStart="@dimen/dimen_16dp"
             android:paddingTop="@dimen/dimen_8dp"
-            android:paddingEnd="@dimen/dimen_16dp"
             android:paddingBottom="@dimen/dimen_8dp">
 
             <ImageView
@@ -57,6 +55,8 @@
                 android:layout_margin="@dimen/dimen_16dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/card_radius_icons_inner"
+                android:paddingStart="@dimen/dimen_16dp"
+                android:paddingEnd="@dimen/dimen_16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -70,7 +70,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:loadImageUsingGlide="@{model.format_64_preview_url}"
-                    app:srcCompat="@drawable/icon_burger" />
+                    app:srcCompat="@drawable/icon_download"/>
 
             </com.google.android.material.card.MaterialCardView>
 
