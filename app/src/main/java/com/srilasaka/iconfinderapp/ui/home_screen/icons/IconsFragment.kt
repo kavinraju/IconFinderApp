@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -32,7 +33,12 @@ class IconsFragment : Fragment() {
     /**
      * Declaring the UI Components
      */
-    private lateinit var binding: FragmentIconsBinding
+    private var _binding: FragmentIconsBinding? = null
+    private var _searchView: EditText? = null
+
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+    private val searchView get() = _searchView!!
 
     private val viewModel: HomeFragmentViewModel by viewModels()
     private lateinit var adapter: IconsAdapter
@@ -40,10 +46,11 @@ class IconsFragment : Fragment() {
     private val downloadManager: DownloadManager by lazy {
         context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
     }
+    private lateinit var queryString: String
 
     companion object {
         private const val LAST_SEARCH_QUERY_SAVED_INSTANCE_KEY = "last_search_query"
-        private const val DEFAULT_QUERY = "arrow"
+        private const val DEFAULT_QUERY = ""
 
         fun newInstance(): IconsFragment {
             val fragment = IconsFragment()
@@ -56,11 +63,11 @@ class IconsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // Get a reference to the binding object
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_icons, container, false)
         Log.d(TAG, "onCreateView")
-
+        // Get a reference to the binding object
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_icons, container, false)
+        // Get a reference to the SearchView in [HomeFragment] object
+        _searchView = parentFragment?.view?.findViewById<EditText>(R.id.input_search_view)
         setUIComponents(savedInstanceState)
 
         return binding.root
@@ -68,12 +75,28 @@ class IconsFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
+        Log.d(TAG, "onSaveInstanceState ${searchView.text}")
         // Save the search query so to recover it on screen rotations
         outState.putString(
             LAST_SEARCH_QUERY_SAVED_INSTANCE_KEY,
-            binding.inputSearchView.text.trim().toString()
+            queryString
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        searchView.setText(queryString)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        searchView.setText(DEFAULT_QUERY)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        _searchView = null
     }
 
 
@@ -84,9 +107,9 @@ class IconsFragment : Fragment() {
         initAdapter()
         initSwipeToRefresh()
 
-        val query =
+        queryString =
             savedInstanceState?.getString(LAST_SEARCH_QUERY_SAVED_INSTANCE_KEY) ?: DEFAULT_QUERY
-        initSearch(query)
+        initSearch(queryString)
         // Refresh the adapter when button retry is clicked.
         binding.loadStateViewItem.btnRetry.setOnClickListener { adapter.refresh() }
     }
@@ -95,10 +118,9 @@ class IconsFragment : Fragment() {
      * Helper method to initialize search view and related objects
      */
     private fun initSearch(query: String) {
-
-        binding.inputSearchView.apply {
-            // Set initial query
-            //setText(query)
+        searchView.apply {
+            // Set the query to the view
+            setText(query)
 
             setOnKeyListener { v, keyCode, event ->
                 if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -109,7 +131,6 @@ class IconsFragment : Fragment() {
                 }
             }
 
-            //
             setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_GO) {
                     updateListFromInputQuery()
@@ -128,9 +149,10 @@ class IconsFragment : Fragment() {
      * Helper method to sanitize the query and call [searchQuery]
      */
     private fun updateListFromInputQuery() {
-        binding.inputSearchView.text.trim().let {
+        searchView.text.trim().let {
             if (it.isNotEmpty()) {
-                searchQuery(it.toString())
+                queryString = it.toString()
+                searchQuery(queryString)
             }
         }
     }
