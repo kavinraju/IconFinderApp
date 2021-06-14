@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -25,11 +26,17 @@ class IconSetFragment : Fragment() {
     /**
      * Declaring the UI Components
      */
-    private lateinit var binding: FragmentIconSetBinding
+    private var _binding: FragmentIconSetBinding? = null
+    private var _searchView: EditText? = null
+
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+    private val searchView get() = _searchView!!
 
     private val viewModel: HomeFragmentViewModel by viewModels()
     private val adapter = IconSetAdapter()
     private var job: Job? = null
+    private lateinit var queryString: String
 
     companion object {
         fun newInstance(): IconSetFragment {
@@ -44,8 +51,7 @@ class IconSetFragment : Fragment() {
     ): View? {
 
         // Get a reference to the binding object
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_icon_set, container, false)
-        Log.d(TAG, "onCreateView")
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_icon_set, container, false)
         return binding.root
     }
 
@@ -55,6 +61,15 @@ class IconSetFragment : Fragment() {
         setUIComponents()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        _searchView = null
+    }
+
+    /**
+     * Helper method to set up UI components
+     */
     private fun setUIComponents() {
         initAdapter()
         initSwipeToRefresh()
@@ -62,6 +77,9 @@ class IconSetFragment : Fragment() {
         binding.loadStateViewItem.btnRetry.setOnClickListener { adapter.refresh() }
     }
 
+    /**
+     * Helper method to initialize [IconSetAdapter] and related objects
+     */
     private fun initAdapter() {
         binding.rvIconSetList.adapter = adapter.withLoadStateFooter(
             //header = IconSetLoadSetAdapter { adapter.retry() },
@@ -118,6 +136,9 @@ class IconSetFragment : Fragment() {
         }
     }
 
+    /**
+     * Helper method to update UI when no items were fetched
+     */
     private fun showEmptyList(show: Boolean) {
         if (show) {
             binding.noDataViewItem.clNoDataLayout.visibility = View.VISIBLE
@@ -128,6 +149,9 @@ class IconSetFragment : Fragment() {
         }
     }
 
+    /**
+     * Helper method to initialize SwipeRefresh UI Item
+     */
     private fun initSwipeToRefresh() {
         binding.swiperefresh.setOnRefreshListener { adapter.refresh() }
         /** Hide the progress bar on the [R.layout.load_state_view_item] as we have the swipe refresh */
