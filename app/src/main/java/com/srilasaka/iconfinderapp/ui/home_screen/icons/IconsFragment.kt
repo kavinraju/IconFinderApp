@@ -1,24 +1,50 @@
 package com.srilasaka.iconfinderapp.ui.home_screen.icons
 
+import android.app.DownloadManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.GridLayoutManager
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconsBinding
+import com.srilasaka.iconfinderapp.downloadFile
+import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentViewModel
+import com.srilasaka.iconfinderapp.ui.home_screen.icon_set.IconSetLoadSetAdapter
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class IconsFragment : Fragment() {
+
+    private val TAG: String = IconsFragment::class.java.simpleName
 
     /**
      * Declaring the UI Components
      */
     private lateinit var binding: FragmentIconsBinding
-    private val TAG: String = IconsFragment::class.java.simpleName
+
+    private val viewModel: HomeFragmentViewModel by viewModels()
+    private lateinit var adapter: IconsAdapter
+    private var job: Job? = null
+    private val downloadManager: DownloadManager by lazy {
+        context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+    }
 
     companion object {
+        private const val LAST_SEARCH_QUERY_SAVED_INSTANCE_KEY = "last_search_query"
+        private const val DEFAULT_QUERY = "arrow"
+
         fun newInstance(): IconsFragment {
             val fragment = IconsFragment()
             return fragment
@@ -34,6 +60,182 @@ class IconsFragment : Fragment() {
         // Get a reference to the binding object
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_icons, container, false)
         Log.d(TAG, "onCreateView")
+
+        setUIComponents(savedInstanceState)
+
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        // Save the search query so to recover it on screen rotations
+        outState.putString(
+            LAST_SEARCH_QUERY_SAVED_INSTANCE_KEY,
+            binding.inputSearchView.text.trim().toString()
+        )
+    }
+
+
+    /**
+     * Helper method to set up UI componments
+     */
+    private fun setUIComponents(savedInstanceState: Bundle?) {
+        initAdapter()
+        initSwipeToRefresh()
+
+        val query =
+            savedInstanceState?.getString(LAST_SEARCH_QUERY_SAVED_INSTANCE_KEY) ?: DEFAULT_QUERY
+        initSearch(query)
+        // Refresh the adapter when button retry is clicked.
+        binding.loadStateViewItem.btnRetry.setOnClickListener { adapter.refresh() }
+    }
+
+    /**
+     * Helper method to initialize search view and related objects
+     */
+    private fun initSearch(query: String) {
+
+        binding.inputSearchView.apply {
+            // Set initial query
+            //setText(query)
+
+            setOnKeyListener { v, keyCode, event ->
+                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    updateListFromInputQuery()
+                    true
+                } else {
+                    false
+                }
+            }
+
+            //
+            setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_GO) {
+                    updateListFromInputQuery()
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+
+
+        searchQuery(query)
+    }
+
+    /**
+     * Helper method to sanitize the query and call [searchQuery]
+     */
+    private fun updateListFromInputQuery() {
+        binding.inputSearchView.text.trim().let {
+            if (it.isNotEmpty()) {
+                searchQuery(it.toString())
+            }
+        }
+    }
+
+    /**
+     * Helper method to call the [HomeFragmentViewModel.searchIcons()] method from [HomeFragmentViewModel]
+     */
+    private fun searchQuery(query: String) {
+        // Use viewModel object to collect the data
+        job?.cancel()
+        job = lifecycleScope.launch {
+            viewModel.searchIcons(query).collectLatest {
+                adapter.submitData(it)
+            }
+        }
+    }
+
+    /**
+     * Helper method to initialize [IconsAdapter] and related objects
+     */
+    private fun initAdapter() {
+        adapter = IconsAdapter(IconsAdapter.IconsAdapterClickListener { downloadUrl, iconId ->
+            downloadFile(context, downloadManager, downloadUrl, iconId.toString())
+        }
+        )
+        val gridLayoutManager = GridLayoutManager(context, 2)
+        gridLayoutManager.apply {
+            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    // Logic to make the IconSetLoadSetAdapter at Footer of the IconsAdapter span across
+                    // entire screen
+                    return if (adapter.getItemViewType(position) == R.layout.load_state_view_item) 2
+                    else 1
+                }
+
+            }
+        }
+
+        binding.rvSearchIconsList.layoutManager = gridLayoutManager
+
+        binding.rvSearchIconsList.adapter = adapter.withLoadStateFooter(
+            //header = IconSetLoadSetAdapter { adapter.retry() },
+            footer = IconSetLoadSetAdapter { adapter.retry() }
+        )
+
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collectLatest { loadStates ->
+
+                // Show the Swipe Refresh when the adapter LoadState is Loading
+                binding.swipeRefresh.isRefreshing =
+                    loadStates.source.refresh is LoadState.Loading
+                Log.d(TAG, "loadStateFlow loadStates = $loadStates")
+                Log.d(
+                    TAG,
+                    "loadStateFlow loadStates.mediator?.refresh = ${loadStates.source.refresh}"
+                )
+
+                // Show list is empty
+                val isEmptyList =
+                    loadStates.source.refresh is LoadState.NotLoading && adapter.itemCount == 0
+                showEmptyList(isEmptyList)
+
+                // Only show the list if refresh succeeds
+                binding.rvSearchIconsList.isVisible =
+                    loadStates.source.refresh is LoadState.NotLoading && !isEmptyList
+
+                // show the retry button if the initial load or refresh fails and display the error message
+                binding.loadStateViewItem.btnRetry.isVisible =
+                    loadStates.source.refresh is LoadState.Error
+                binding.loadStateViewItem.tvErrorDescription.isVisible =
+                    loadStates.source.refresh is LoadState.Error
+
+                /*val errorState = loadStates.source.append as? LoadState.Error
+                    ?: loadStates.source.prepend as? LoadState.Error
+                    ?: loadStates.source.append as? LoadState.Error
+                    ?: loadStates.source.prepend as? LoadState.Error
+
+                errorState?.let {
+                    binding.loadStateViewItem.tvErrorDescription.text = it.error.toString()
+                }*/
+
+
+            }
+        }
+    }
+
+    /**
+     * Helper method to update UI when no items were fetched
+     */
+    private fun showEmptyList(show: Boolean) {
+        if (show) {
+            binding.noDataViewItem.clNoDataLayout.visibility = View.VISIBLE
+            binding.rvSearchIconsList.visibility = View.GONE
+        } else {
+            binding.noDataViewItem.clNoDataLayout.visibility = View.GONE
+            binding.rvSearchIconsList.visibility = View.VISIBLE
+        }
+    }
+
+    /**
+     * Helper method to initialize SwipeRefresh UI Item
+     */
+    private fun initSwipeToRefresh() {
+        binding.swipeRefresh.setOnRefreshListener { adapter.refresh() }
+        /** Hide the progress bar on the [R.layout.load_state_view_item] as we have the swipe refresh */
+        binding.loadStateViewItem.progressBar.visibility = View.GONE
     }
 }

@@ -4,6 +4,7 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.srilasaka.iconfinderapp.network.models.IconSets
+import com.srilasaka.iconfinderapp.network.models.Icons
 import com.srilasaka.iconfinderapp.network.utils.EndPoints
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -46,10 +47,22 @@ interface IconFinderAPIService {
     @GET("iconsets")
     suspend fun getAllPublicIconSets(
         // Setting the default count to 20
-        @Query("count") count: Int = 100,
+        @Query("count") count: Int = 20,
         // "after" query parameter is optional - if no need to use this, just pass null
         @Query("after") after: Int?
     ): IconSets
+
+
+    @Headers("Authorization: ${EndPoints.AuthorizationHeader}")
+    @GET("icons/search")
+    suspend fun searchIcons(
+        // Setting the default count to 20
+        @Query("count") count: Int = 20,
+        // "query" parameter is mandatory
+        @Query("query") query: String,
+        // offset value ranges from 0 - 100
+        @Query("offset") offset: Int
+    ): Icons
 
     companion object {
         fun create(): IconFinderAPIService = IconFinderAPI.retrofitService

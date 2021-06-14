@@ -6,6 +6,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.srilasaka.iconfinderapp.local_database.IconsFinderDatabase
 import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
+import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
+import com.srilasaka.iconfinderapp.network.models.Icon
 import com.srilasaka.iconfinderapp.network.services.IconFinderAPIService
 import kotlinx.coroutines.flow.Flow
 
@@ -34,7 +36,28 @@ class IconFinderRepository(
         }.flow
     }
 
+    /**
+     * searchIcons() searches the Icons that matches the @param query.
+     *
+     * @param query - text typed the user for querying the icons
+     */
+    fun searchIcons(query: String): Flow<PagingData<IconsEntry>> {
+        Log.d(TAG, "New Icons query")
+
+        //val pagingSourceFactory = { database.iconSetsDao.getIconSets() }
+
+        return Pager(
+            PagingConfig(pageSize = NUMBER_OF_ITEMS_TO_FETCH, enablePlaceholders = false)
+        ) {
+            SearchIconsPagingSource(
+                query = query,
+                database,
+                service
+            )
+        }.flow
+    }
+
     companion object {
-        const val NUMBER_OF_ITEMS_TO_FETCH = 100
+        const val NUMBER_OF_ITEMS_TO_FETCH = 20
     }
 }

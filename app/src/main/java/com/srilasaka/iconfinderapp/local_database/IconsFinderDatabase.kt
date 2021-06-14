@@ -6,11 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsDao
 import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
+import com.srilasaka.iconfinderapp.local_database.icons_table.OffsetDao
+import com.srilasaka.iconfinderapp.local_database.icons_table.OffsetEntry
 import com.srilasaka.iconfinderapp.local_database.remote_keys_table.RemoteKeysDao
 import com.srilasaka.iconfinderapp.local_database.remote_keys_table.RemoteKeysEntry
 
 @Database(
-    entities = [IconSetsEntry::class, RemoteKeysEntry::class],
+    entities = [IconSetsEntry::class, RemoteKeysEntry::class, OffsetEntry::class],
     version = 1,
     exportSchema = false
 )
@@ -18,6 +20,7 @@ abstract class IconsFinderDatabase : RoomDatabase() {
 
     abstract val iconSetsDao: IconSetsDao
     abstract val remoteKeysDao: RemoteKeysDao
+    abstract val offsetDao: OffsetDao
 
     companion object {
         @Volatile

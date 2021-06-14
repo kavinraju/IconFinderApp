@@ -12,6 +12,7 @@ import androidx.paging.map
 import com.srilasaka.iconfinderapp.data.IconFinderRepository
 import com.srilasaka.iconfinderapp.local_database.IconsFinderDatabase
 import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
+import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
 import com.srilasaka.iconfinderapp.network.services.IconFinderAPIService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -27,6 +28,9 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
     )
 
     private var iconSetsQueryResult: Flow<PagingData<UiModel.IconSetDataItem>>? = null
+    private var searchIconsQueryResult: Flow<PagingData<UiModel.IconsDataItem>>? = null
+
+    private var currentSearchIconsQuery: String? = null
 
     /**
      * iconSetsQuery() function queries the data from the [IconFinderRepository.getPublicIconSets].
@@ -38,6 +42,25 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
             .cachedIn(viewModelScope)
 
         iconSetsQueryResult = newResult
+        return newResult
+
+    }
+
+    /**
+     * searchIcons() function queries the data from the [IconFinderRepository.getPublicIconSets].
+     */
+    fun searchIcons(query: String): Flow<PagingData<UiModel.IconsDataItem>> {
+        Log.d(TAG, "searchIcons")
+        val lastResult = searchIconsQueryResult
+        if (query == currentSearchIconsQuery && lastResult != null) {
+            return lastResult
+        }
+
+        val newResult: Flow<PagingData<UiModel.IconsDataItem>> = repository.searchIcons(query)
+            .map { pagingData -> pagingData.map { UiModel.IconsDataItem(it) } }
+            .cachedIn(viewModelScope)
+
+        searchIconsQueryResult = newResult
         return newResult
 
     }
@@ -61,4 +84,5 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
  */
 sealed class UiModel {
     data class IconSetDataItem(val iconSetsEntry: IconSetsEntry) : UiModel()
+    data class IconsDataItem(val iconsEntry: IconsEntry) : UiModel()
 }

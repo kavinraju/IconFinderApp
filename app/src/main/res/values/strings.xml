@@ -30,4 +30,5 @@
     <string name="retry">Retry</string>
     <string name="no_data">No data!</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="search">Search</string>
 </resources>
