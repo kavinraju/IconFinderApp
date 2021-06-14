@@ -70,14 +70,14 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:loadImageUsingGlide="@{model.format_64_preview_url}"
-                    app:srcCompat="@drawable/icon_download"/>
+                    app:srcCompat="@drawable/icon_download" />
 
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_icons_download"
                 style="@style/Widget.App.Button.UnelevatedButton"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_8dp"
                 android:onClick="@{()->clickListener.onClickDownloadButton(model.format_64_download_url, model.icon_id)}"
