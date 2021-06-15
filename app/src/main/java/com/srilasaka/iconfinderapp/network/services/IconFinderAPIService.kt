@@ -61,7 +61,10 @@ interface IconFinderAPIService {
         // "query" parameter is mandatory
         @Query("query") query: String,
         // offset value ranges from 0 - 100
-        @Query("offset") offset: Int
+        @Query("offset") offset: Int,
+        // premium - "false" or "0" means not-premium, "true" or "1" means premium,
+        // "all" means include all icons no matter if they are premium icons or not and it's the default
+        @Query("premium") premium: String = "all"
     ): Icons
 
     companion object {

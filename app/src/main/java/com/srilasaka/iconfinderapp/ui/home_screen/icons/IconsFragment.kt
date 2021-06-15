@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,8 +21,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconsBinding
 import com.srilasaka.iconfinderapp.downloadFile
+import com.srilasaka.iconfinderapp.getPremium
+import com.srilasaka.iconfinderapp.openDialogBox
 import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentViewModel
 import com.srilasaka.iconfinderapp.ui.home_screen.icon_set.IconSetLoadSetAdapter
+import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
+import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -35,10 +40,12 @@ class IconsFragment : Fragment() {
      */
     private var _binding: FragmentIconsBinding? = null
     private var _searchView: EditText? = null
+    private var _filterView: ImageView? = null
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     private val searchView get() = _searchView!!
+    private val filterView get() = _filterView!!
 
     private val viewModel: HomeFragmentViewModel by viewModels()
     private lateinit var adapter: IconsAdapter
@@ -97,6 +104,7 @@ class IconsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         _searchView = null
+        _filterView = null
     }
 
 
@@ -112,6 +120,15 @@ class IconsFragment : Fragment() {
         initSearch(queryString)
         // Refresh the adapter when button retry is clicked.
         binding.loadStateViewItem.btnRetry.setOnClickListener { adapter.refresh() }
+
+        _filterView = parentFragment?.view?.findViewById(R.id.iv_filter_view)
+        filterView.setOnClickListener {
+
+            val dialog = openDialogBox(requireContext(), FILTER_SCREEN.ICONS)
+            dialog.openFilterOption {
+                searchQuery(queryString, it)
+            }
+        }
     }
 
     /**
@@ -159,12 +176,20 @@ class IconsFragment : Fragment() {
 
     /**
      * Helper method to call the [HomeFragmentViewModel.searchIcons()] method from [HomeFragmentViewModel]
+     * @param query -
+     * @param premium - default value is retrieved from the function [getPremium]
+     *
+     * [getPremium] function requires
+     * @param [Context], @param [FILTER_SCREEN]
      */
-    private fun searchQuery(query: String) {
+    private fun searchQuery(
+        query: String,
+        premium: PREMIUM = getPremium(requireContext(), FILTER_SCREEN.ICONS)
+    ) {
         // Use viewModel object to collect the data
         job?.cancel()
         job = lifecycleScope.launch {
-            viewModel.searchIcons(query).collectLatest {
+            viewModel.searchIcons(query, premium).collectLatest {
                 adapter.submitData(it)
             }
         }

@@ -14,6 +14,8 @@ import com.srilasaka.iconfinderapp.local_database.IconsFinderDatabase
 import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
 import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
 import com.srilasaka.iconfinderapp.network.services.IconFinderAPIService
+import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
+import com.srilasaka.iconfinderapp.utils.SharedPreferencesUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -49,16 +51,17 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
     /**
      * searchIcons() function queries the data from the [IconFinderRepository.getPublicIconSets].
      */
-    fun searchIcons(query: String): Flow<PagingData<UiModel.IconsDataItem>> {
+    fun searchIcons(query: String, premium: PREMIUM): Flow<PagingData<UiModel.IconsDataItem>> {
         Log.d(TAG, "searchIcons")
         val lastResult = searchIconsQueryResult
         if (query == currentSearchIconsQuery && lastResult != null) {
             return lastResult
         }
 
-        val newResult: Flow<PagingData<UiModel.IconsDataItem>> = repository.searchIcons(query)
-            .map { pagingData -> pagingData.map { UiModel.IconsDataItem(it) } }
-            .cachedIn(viewModelScope)
+        val newResult: Flow<PagingData<UiModel.IconsDataItem>> =
+            repository.searchIcons(query, premium)
+                .map { pagingData -> pagingData.map { UiModel.IconsDataItem(it) } }
+                .cachedIn(viewModelScope)
 
         searchIconsQueryResult = newResult
         return newResult

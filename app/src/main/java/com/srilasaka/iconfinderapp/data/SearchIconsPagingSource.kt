@@ -9,12 +9,15 @@ import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
 import com.srilasaka.iconfinderapp.local_database.icons_table.OffsetEntry
 import com.srilasaka.iconfinderapp.network.models.mapAsIconSetsEntry
 import com.srilasaka.iconfinderapp.network.services.IconFinderAPIService
+import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.*
 
 @OptIn(ExperimentalPagingApi::class)
 class SearchIconsPagingSource(
     private val query: String,
+    private val isPREMIUM: PREMIUM,
     private val database: IconsFinderDatabase,
     private val networkService: IconFinderAPIService
 ) : PagingSource<Int, IconsEntry>() {
@@ -28,6 +31,7 @@ class SearchIconsPagingSource(
         Log.d(TAG, "load()")
 
         return try {
+
             /**
              * [OffsetEntry.getOffsetEntry] fetches the [OffsetEntry] having the highest
              * [OffsetEntry.offset] so that we can call the query incrementally from 0 to 100.
@@ -46,7 +50,8 @@ class SearchIconsPagingSource(
             // Get the response by making an API call
             val response = networkService.searchIcons(
                 query = query,
-                offset = offset
+                offset = offset,
+                premium = isPREMIUM.name.lowercase(Locale.getDefault())
             )
 
             // Get the list of [Icon]

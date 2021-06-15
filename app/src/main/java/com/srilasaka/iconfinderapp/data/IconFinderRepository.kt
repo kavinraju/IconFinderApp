@@ -7,8 +7,8 @@ import androidx.paging.PagingData
 import com.srilasaka.iconfinderapp.local_database.IconsFinderDatabase
 import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
 import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
-import com.srilasaka.iconfinderapp.network.models.Icon
 import com.srilasaka.iconfinderapp.network.services.IconFinderAPIService
+import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -41,7 +41,7 @@ class IconFinderRepository(
      *
      * @param query - text typed the user for querying the icons
      */
-    fun searchIcons(query: String): Flow<PagingData<IconsEntry>> {
+    fun searchIcons(query: String, premium: PREMIUM): Flow<PagingData<IconsEntry>> {
         Log.d(TAG, "New Icons query")
 
         //val pagingSourceFactory = { database.iconSetsDao.getIconSets() }
@@ -51,6 +51,7 @@ class IconFinderRepository(
         ) {
             SearchIconsPagingSource(
                 query = query,
+                isPREMIUM = premium,
                 database,
                 service
             )
