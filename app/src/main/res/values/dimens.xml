@@ -20,7 +20,6 @@
     <dimen name="dimen_20sp">20sp</dimen>
     <dimen name="card_width_material_card_view_icons_inner">123dp</dimen>
     <dimen name="card_height_material_card_view_icons_inner">74dp</dimen>
-    <dimen name="dimen_32dp">32dp</dimen>
 
     <dimen name="dimen_24sp">24sp</dimen>
     <dimen name="dimen_30sp">30sp</dimen>
