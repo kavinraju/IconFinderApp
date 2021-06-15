@@ -12,11 +12,15 @@ import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
 class IconSetViewHolder private constructor(val binding: RecyclerItemIconSetBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(iconSetsEntry: IconSetsEntry?) {
+    fun bind(
+        iconSetsEntry: IconSetsEntry?,
+        clickListener: IconSetAdapter.IconSetAdapterClickListener
+    ) {
         if (iconSetsEntry == null) {
             //Show the Loading UI
         } else {
             binding.model = iconSetsEntry
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
     }

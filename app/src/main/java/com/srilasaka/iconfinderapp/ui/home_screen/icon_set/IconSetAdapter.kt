@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.ui.home_screen.UiModel
 
-class IconSetAdapter : PagingDataAdapter<UiModel.IconSetDataItem, ViewHolder>(UI_MODEL_COMPARATOR) {
+class IconSetAdapter(private val clickListener: IconSetAdapterClickListener) :
+    PagingDataAdapter<UiModel.IconSetDataItem, ViewHolder>(UI_MODEL_COMPARATOR) {
 
     companion object {
         private val UI_MODEL_COMPARATOR =
@@ -60,8 +61,18 @@ class IconSetAdapter : PagingDataAdapter<UiModel.IconSetDataItem, ViewHolder>(UI
         val uiModel = getItem(position)
         uiModel.let {
             when (uiModel) {
-                is UiModel.IconSetDataItem -> (holder as IconSetViewHolder).bind(uiModel.iconSetsEntry)
+                is UiModel.IconSetDataItem -> (holder as IconSetViewHolder).bind(
+                    uiModel.iconSetsEntry,
+                    clickListener
+                )
             }
         }
+    }
+
+    /**
+     * Click Listener
+     */
+    class IconSetAdapterClickListener(val iconSetItemClickListener: (iconSetID: Int) -> Unit) {
+        fun onClickIconSetItem(iconSetID: Int) = iconSetItemClickListener(iconSetID)
     }
 }

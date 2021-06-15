@@ -1,14 +1,13 @@
 package com.srilasaka.iconfinderapp.ui
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.ActivityHomeBinding
 
@@ -25,10 +24,25 @@ class HomeActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-//        val navController = findNavController(R.id.nav_host_fragment_content_main)
-//        appBarConfiguration = AppBarConfiguration(navController.graph)
-//        setupActionBarWithNavController(navController, appBarConfiguration)
+        val navController = findNavController(R.id.nav_host_fragment_content_home)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.homeFragment -> {
+                    binding.collapsingToolbarLayoutHomeScreen.apply {
+                        title = getString(R.string.home)
+                    }
+                }
+                R.id.iconSetDetailsFragment -> {
+                    binding.collapsingToolbarLayoutHomeScreen.apply {
+                        title = ""
+                    }
+                }
+
+            }
+        }
         /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show()*/
     }
@@ -50,7 +64,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        //val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return false //navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        val navController = findNavController(R.id.nav_host_fragment_content_home)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

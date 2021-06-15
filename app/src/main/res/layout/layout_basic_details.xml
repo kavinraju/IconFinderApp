@@ -172,12 +172,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_8dp"
             android:fontFamily="@font/montserrat_medium"
-            android:text="@string/sample_string_info"
             android:textColor="@color/text_color"
             android:textSize="@dimen/dimen_18sp"
             app:layout_constraintEnd_toEndOf="@id/iv_icon_set_details_details_premium_free"
             app:layout_constraintStart_toStartOf="@id/tv_icon_set_details_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_icon_set_details_info_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_icon_set_details_info_title"
+            tools:text="@string/sample_string_info" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

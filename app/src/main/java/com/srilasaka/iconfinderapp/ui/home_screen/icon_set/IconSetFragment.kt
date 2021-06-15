@@ -14,11 +14,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconSetBinding
+import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentDirections
 import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentViewModel
 import com.srilasaka.iconfinderapp.ui.home_screen.icons.IconsFragment
 import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
@@ -130,7 +132,11 @@ class IconSetFragment : Fragment() {
      * Helper method to initialize [IconSetAdapter] and related objects
      */
     private fun initAdapter() {
-        adapter = IconSetAdapter()
+        adapter = IconSetAdapter(IconSetAdapter.IconSetAdapterClickListener { iconSetID: Int ->
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToIconSetDetailsFragment(iconSetID)
+            )
+        })
 
         // Get the screen orientation and set the layoutManager of binding.rvIconSetList accordingly.
         // Use LinearLayoutManager for Portrait mode.

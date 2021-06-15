@@ -40,4 +40,6 @@
     <string name="sample_string_website_url">www.icon7.com</string>
     <string name="info">Info:</string>
     <string name="sample_string_info">"At vero eos et accusamus et iusto odi dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atq ue corrupti quos dolores et quas mol estias excepturi sint occaecati cupidi. praesentium voluptatum deleniti atq ue corrupti quos dolores et quas mol. "</string>
+    <string name="title_activity_details">Details</string>
+    <string name="home">Home</string>
 </resources>
