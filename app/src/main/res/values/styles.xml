@@ -43,6 +43,19 @@
         <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
         <item name="backgroundTint">@color/button_color</item>
         <item name="textAllCaps">false</item>
+        <item name="iconGravity">textStart</item>
+        <item name="fontFamily">@font/montserrat_medium</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle1
+        </item>
+    </style>
+
+    <style name="Widget.App.Button.UnelevatedButton.IconDetailsScreen" parent="Widget.App.Button.UnelevatedButton">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="backgroundTint">@color/button_color</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:insetTop">@dimen/dimen_0dp</item>
+        <item name="android:insetBottom">@dimen/dimen_0dp</item>
+        <item name="iconSize">@dimen/dimen_16dp</item>
     </style>
 
     <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">

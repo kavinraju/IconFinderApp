@@ -33,4 +33,9 @@
         <item name="colorControlNormal">@color/black</item>
     </style>
 
+    <!-- DetailsMaterialToolBarTheme -->
+    <style name="DetailsMaterialToolBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlHighlight">@color/ripple_color_purple</item>
+    </style>
+
 </resources>

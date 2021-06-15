@@ -22,9 +22,12 @@
     <dimen name="card_height_material_card_view_icons_inner">74dp</dimen>
     <dimen name="dimen_32dp">32dp</dimen>
 
-    <dimen name="dimen_20_49sp">21sp</dimen>
+    <dimen name="dimen_24sp">24sp</dimen>
+    <dimen name="dimen_30sp">30sp</dimen>
     <dimen name="card_radius_icon_set">25dp</dimen>
     <dimen name="dimen_32sp">32sp</dimen>
     <dimen name="dimen_1dp">1dp</dimen>
     <dimen name="dimen_18sp">18sp</dimen>
+    <dimen name="dimen_62dp">62dp</dimen>
+    <dimen name="dimen_32dp">32dp</dimen>
 </resources>
