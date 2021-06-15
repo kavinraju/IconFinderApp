@@ -11,7 +11,7 @@ data class IconsEntry(
     val is_purchased: Boolean?,
 
     val prices: List<Price>?,
-    // Deconstructed the first Price & License info into individual columns
+    /** Deconstructed the first [Price] & [License] info into individual columns */
     val price: String?,
     val license_id: String?,
     val license_name: String?,
@@ -20,7 +20,7 @@ data class IconsEntry(
 
     val published_at: String?,
 
-    // Deconstructed the RasterSize format of size 64
+    /** Deconstructed the [RasterSize] format of size 64 */
     val raster_sizes: List<RasterSize>?,
     val format_64_download_url: String?,
     val format_64: String?,

@@ -37,7 +37,7 @@
             android:layout_marginEnd="@dimen/dimen_32dp"
             android:contentDescription="@string/this_is_the_subscription_type_premium_or_free"
             android:elevation="@dimen/dimen_2dp"
-            android:loadSubscriptionTypeIcon="@{model.is_premium()}"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_icon_set_details_details_name"
             app:srcCompat="@drawable/icon_premium" />
@@ -180,3 +180,8 @@
             app:layout_constraintTop_toBottomOf="@id/tv_icon_set_details_info_title" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+
+    <!--
+    Just for reference, should be removed this after using
+     android:loadSubscriptionTypeIcon="@{model.is_premium}"
+    -->
