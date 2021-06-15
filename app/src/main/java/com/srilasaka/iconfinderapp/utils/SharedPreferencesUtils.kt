@@ -2,6 +2,7 @@ package com.srilasaka.iconfinderapp.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
 
 class SharedPreferencesUtils(context: Context, sharedPreferenceID: Int) {
@@ -19,7 +20,7 @@ class SharedPreferencesUtils(context: Context, sharedPreferenceID: Int) {
 
         // Keys
         const val FILTER_ICON_SET_IS_PREMIUM_KEY = "filter_icon_set_is_premium_key"
-        const val FILTER_ICONS_IS_PREMIUM_KEY = "filter_icon_s_is_premium_key"
+        const val FILTER_ICONS_IS_PREMIUM_KEY = "filter_icons_is_premium_key"
     }
 
     init {
@@ -46,6 +47,7 @@ class SharedPreferencesUtils(context: Context, sharedPreferenceID: Int) {
      *  3. all
      */
     fun setIconSetIsPremiumFilterOption(isPremium: String) {
+        Log.d("setIconSetIsPremiumFi", "isPremium $isPremium")
         editor.apply {
             putString(FILTER_ICON_SET_IS_PREMIUM_KEY, isPremium)
             apply()
@@ -73,6 +75,7 @@ class SharedPreferencesUtils(context: Context, sharedPreferenceID: Int) {
      *  3. all
      */
     fun setIconsIsPremiumFilterOption(isPremium: String) {
+        Log.d("setIconsIsPremiumFilter", "isPremium $isPremium")
         editor.apply {
             putString(FILTER_ICONS_IS_PREMIUM_KEY, isPremium)
             apply()

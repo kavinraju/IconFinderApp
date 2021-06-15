@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import com.srilasaka.iconfinderapp.network.utils.EndPoints
 import com.srilasaka.iconfinderapp.ui.utils.DialogBoxes
@@ -53,6 +54,7 @@ fun downloadFile(
  * @param filterScreen - [FILTER_SCREEN] ENUM which has the screen that implemented the filter option
  */
 fun openDialogBox(context: Context, filterScreen: FILTER_SCREEN): DialogBoxes {
+    Log.d("openDialogBox()", "filterScreen $filterScreen")
     val sharedPrefID = when (filterScreen) {
         FILTER_SCREEN.ICON_SET -> {
             SharedPreferencesUtils.USER_FILTER_PREFERENCES_ICON_SET_ID
@@ -64,12 +66,21 @@ fun openDialogBox(context: Context, filterScreen: FILTER_SCREEN): DialogBoxes {
     val sharedPreferencesUtils = SharedPreferencesUtils(context, sharedPrefID)
     val premium = when (filterScreen) {
         FILTER_SCREEN.ICON_SET -> {
+            Log.d(
+                "openDialogBox()",
+                "getIconSetIsPremiumFilterOption ${sharedPreferencesUtils.getIconSetIsPremiumFilterOption()}"
+            )
             PREMIUM.valueOf(sharedPreferencesUtils.getIconSetIsPremiumFilterOption())
         }
         FILTER_SCREEN.ICONS -> {
+            Log.d(
+                "openDialogBox()",
+                "getIconsIsPremiumFilterOption ${sharedPreferencesUtils.getIconsIsPremiumFilterOption()}"
+            )
             PREMIUM.valueOf(sharedPreferencesUtils.getIconsIsPremiumFilterOption())
         }
     }
+    Log.d("openDialogBox()", "premium $premium")
 
     return DialogBoxes(
         context,
@@ -82,18 +93,20 @@ fun openDialogBox(context: Context, filterScreen: FILTER_SCREEN): DialogBoxes {
  * Helper function to get the stored premium value from [SharedPreferencesUtils] based on [FILTER_SCREEN]
  */
 fun getPremium(context: Context, filterScreen: FILTER_SCREEN): PREMIUM {
-    val sharedPrefID = when (filterScreen) {
+    return when (filterScreen) {
         FILTER_SCREEN.ICON_SET -> {
-            SharedPreferencesUtils.USER_FILTER_PREFERENCES_ICON_SET_ID
+            val sharedPreferencesUtils = SharedPreferencesUtils(
+                context, SharedPreferencesUtils.USER_FILTER_PREFERENCES_ICON_SET_ID
+            )
+            PREMIUM.valueOf(sharedPreferencesUtils.getIconsIsPremiumFilterOption())
         }
         FILTER_SCREEN.ICONS -> {
-            SharedPreferencesUtils.USER_FILTER_PREFERENCES_ICONS_ID
+            val sharedPreferencesUtils = SharedPreferencesUtils(
+                context, SharedPreferencesUtils.USER_FILTER_PREFERENCES_ICONS_ID
+            )
+            PREMIUM.valueOf(sharedPreferencesUtils.getIconsIsPremiumFilterOption())
         }
     }
-    val sharedPreferencesUtils = SharedPreferencesUtils(
-        context, sharedPrefID
-    )
-    return PREMIUM.valueOf(sharedPreferencesUtils.getIconsIsPremiumFilterOption())
 }
 
 /**

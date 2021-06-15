@@ -20,7 +20,7 @@ class IconFinderRepository(
 ) {
     private val TAG: String? = IconFinderRepository::class.simpleName
 
-    fun getPublicIconSets(): Flow<PagingData<IconSetsEntry>> {
+    fun getPublicIconSets(premium: PREMIUM): Flow<PagingData<IconSetsEntry>> {
         Log.d(TAG, "New Icon Sets query")
 
         val pagingSourceFactory = { database.iconSetsDao.getIconSets() }
@@ -30,6 +30,7 @@ class IconFinderRepository(
         ) {
             IconSetsPagingSource(
                 query = null,
+                premium = premium,
                 database,
                 service
             )

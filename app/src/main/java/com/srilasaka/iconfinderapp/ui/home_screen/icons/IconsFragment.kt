@@ -71,11 +71,9 @@ class IconsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG, "onCreateView")
         // Get a reference to the binding object
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_icons, container, false)
-        // Get a reference to the SearchView in [HomeFragment] object
-        _searchView = parentFragment?.view?.findViewById<EditText>(R.id.input_search_view)
+
         setUIComponents(savedInstanceState)
 
         return binding.root
@@ -83,7 +81,6 @@ class IconsFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.d(TAG, "onSaveInstanceState ${searchView.text}")
         // Save the search query so to recover it on screen rotations
         outState.putString(
             LAST_SEARCH_QUERY_SAVED_INSTANCE_KEY,
@@ -94,10 +91,12 @@ class IconsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         searchView.setText(queryString)
+        setUpFilterViewClickListener()
     }
 
     override fun onPause() {
         super.onPause()
+        filterView.setOnClickListener(null)
         searchView.setText(DEFAULT_QUERY)
     }
 
@@ -105,6 +104,7 @@ class IconsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         _searchView = null
+        filterView.setOnClickListener(null)
         _filterView = null
     }
 
@@ -113,6 +113,11 @@ class IconsFragment : Fragment() {
      * Helper method to set up UI componments
      */
     private fun setUIComponents(savedInstanceState: Bundle?) {
+
+        // Get a reference to the SearchView in [HomeFragment] object
+        _searchView = parentFragment?.view?.findViewById<EditText>(R.id.input_search_view)
+        // Get a reference to the Filter View in [HomeFragment] object
+        _filterView = parentFragment?.view?.findViewById(R.id.iv_filter_view)
         initAdapter()
         initSwipeToRefresh()
 
@@ -121,15 +126,6 @@ class IconsFragment : Fragment() {
         initSearch(queryString)
         // Refresh the adapter when button retry is clicked.
         binding.loadStateViewItem.btnRetry.setOnClickListener { adapter.refresh() }
-
-        _filterView = parentFragment?.view?.findViewById(R.id.iv_filter_view)
-        filterView.setOnClickListener {
-
-            val dialog = openDialogBox(requireContext(), FILTER_SCREEN.ICONS)
-            dialog.openFilterOption {
-                searchQuery(queryString, it)
-            }
-        }
     }
 
     /**
@@ -176,7 +172,7 @@ class IconsFragment : Fragment() {
     }
 
     /**
-     * Helper method to call the [HomeFragmentViewModel.searchIcons()] method from [HomeFragmentViewModel]
+     * Helper method to call the [HomeFragmentViewModel.searchIcons] method from [HomeFragmentViewModel]
      * @param query -
      * @param premium - default value is retrieved from the function [getPremium]
      *
@@ -290,5 +286,20 @@ class IconsFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener { adapter.refresh() }
         /** Hide the progress bar on the [R.layout.load_state_view_item] as we have the swipe refresh */
         binding.loadStateViewItem.progressBar.visibility = View.GONE
+    }
+
+    /**
+     * Helper method to setup filterView setOnClickListener.
+     * It's been separated from the [setUIComponents] method as this has to be called in [onResume]
+     * as this filterView setOnClickListener has to be set to NULL on [onPause], so that
+     * setOnClickListener on filterView is not called we me move to [IconSetFragment]
+     */
+    private fun setUpFilterViewClickListener() {
+        filterView.setOnClickListener {
+            val dialog = openDialogBox(requireContext(), FILTER_SCREEN.ICONS)
+            dialog.openFilterOption {
+                searchQuery(queryString, it)
+            }
+        }
     }
 }

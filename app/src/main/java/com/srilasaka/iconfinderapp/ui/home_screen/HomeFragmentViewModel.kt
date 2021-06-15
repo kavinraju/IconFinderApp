@@ -15,7 +15,6 @@ import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
 import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
 import com.srilasaka.iconfinderapp.network.services.IconFinderAPIService
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
-import com.srilasaka.iconfinderapp.utils.SharedPreferencesUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -37,9 +36,9 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
     /**
      * iconSetsQuery() function queries the data from the [IconFinderRepository.getPublicIconSets].
      */
-    fun iconSetsQuery(): Flow<PagingData<UiModel.IconSetDataItem>> {
+    fun iconSetsQuery(premium: PREMIUM): Flow<PagingData<UiModel.IconSetDataItem>> {
         Log.d(TAG, "iconSetsQuery")
-        val newResult: Flow<PagingData<UiModel.IconSetDataItem>> = repository.getPublicIconSets()
+        val newResult: Flow<PagingData<UiModel.IconSetDataItem>> = repository.getPublicIconSets(premium)
             .map { pagingData -> pagingData.map { UiModel.IconSetDataItem(it) } }
             .cachedIn(viewModelScope)
 

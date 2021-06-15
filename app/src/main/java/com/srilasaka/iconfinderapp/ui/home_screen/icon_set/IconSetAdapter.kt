@@ -29,7 +29,7 @@ class IconSetAdapter : PagingDataAdapter<UiModel.IconSetDataItem, ViewHolder>(UI
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (viewType == R.layout.recycler_item_icon_set) {
+        return if (viewType == R.layout.recycler_item_icons) {
             IconSetViewHolder.from(parent)
         } else {
             IconSetViewHolder.from(parent)
@@ -37,11 +37,23 @@ class IconSetAdapter : PagingDataAdapter<UiModel.IconSetDataItem, ViewHolder>(UI
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is UiModel.IconSetDataItem -> R.layout.recycler_item_icon_set
-            null -> throw UnsupportedOperationException("Unknown view")
+        return when {
+            // For the loaded data items from the Paging source
+            position < itemCount -> {
+
+                when (getItem(position)) {
+                    is UiModel.IconSetDataItem -> R.layout.recycler_item_icons
+                    null -> throw UnsupportedOperationException("Unknown view")
+                    else -> throw UnsupportedOperationException("Unknown view")
+                }
+            }
+            // For the footer item
+            position == itemCount -> {
+                R.layout.load_state_view_item
+            }
             else -> throw UnsupportedOperationException("Unknown view")
         }
+
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -1,20 +1,31 @@
 package com.srilasaka.iconfinderapp.ui.home_screen.icon_set
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconSetBinding
 import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentViewModel
+import com.srilasaka.iconfinderapp.ui.home_screen.icons.IconsFragment
+import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
+import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
+import com.srilasaka.iconfinderapp.utils.getPremium
+import com.srilasaka.iconfinderapp.utils.openDialogBox
+import com.srilasaka.iconfinderapp.utils.screenOrientationIsPortrait
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -28,15 +39,16 @@ class IconSetFragment : Fragment() {
      */
     private var _binding: FragmentIconSetBinding? = null
     private var _searchView: EditText? = null
+    private var _filterView: ImageView? = null
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     private val searchView get() = _searchView!!
+    private val filterView get() = _filterView!!
 
     private val viewModel: HomeFragmentViewModel by viewModels()
-    private val adapter = IconSetAdapter()
+    private lateinit var adapter: IconSetAdapter
     private var job: Job? = null
-    private lateinit var queryString: String
 
     companion object {
         fun newInstance(): IconSetFragment {
@@ -44,33 +56,48 @@ class IconSetFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         // Get a reference to the binding object
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_icon_set, container, false)
+
+        setUIComponents()
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+        setUpFilterViewClickListener()
+    }
 
-        setUIComponents()
+    override fun onPause() {
+        super.onPause()
+        filterView.setOnClickListener(null)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
         _searchView = null
+        filterView.setOnClickListener(null)
+        _filterView = null
     }
 
     /**
      * Helper method to set up UI components
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setUIComponents() {
+
+        // Get a reference to the SearchView in [HomeFragment] object
+        _searchView = parentFragment?.view?.findViewById<EditText>(R.id.input_search_view)
+        // Get a reference to the Filter view in [HomeFragment] object
+        _filterView = parentFragment?.view?.findViewById(R.id.iv_filter_view)
+
         initAdapter()
         initSwipeToRefresh()
         // Refresh the adapter when button retry is clicked.
@@ -78,9 +105,58 @@ class IconSetFragment : Fragment() {
     }
 
     /**
+     * Helper method to call the [HomeFragmentViewModel.iconSetsQuery] method from [HomeFragmentViewModel]
+     * @param premium - default value is retrieved from the function [getPremium]
+     *
+     * [getPremium] function requires
+     * @param [Context], @param [FILTER_SCREEN]
+     */
+    private fun queryIconSetsData(
+        premium: PREMIUM = getPremium(
+            requireContext(),
+            FILTER_SCREEN.ICON_SET
+        )
+    ) {
+        // Use viewModel object to collect the data
+        job?.cancel()
+        job = viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.iconSetsQuery(premium).collectLatest {
+                adapter.submitData(it)
+            }
+        }
+    }
+
+    /**
      * Helper method to initialize [IconSetAdapter] and related objects
      */
     private fun initAdapter() {
+        adapter = IconSetAdapter()
+
+        // Get the screen orientation and set the layoutManager of binding.rvIconSetList accordingly.
+        // Use LinearLayoutManager for Portrait mode.
+        // Use GridLayoutManager for Landscape mode.
+        val screenOrientationIsPortrait = screenOrientationIsPortrait(requireContext())
+        val layoutManager = if (screenOrientationIsPortrait) LinearLayoutManager(
+            context,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        else {
+            GridLayoutManager(context, 2).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        // Logic to make the LoadStateAdapter at Footer of the IconSetAdapter span across
+                        // entire screen
+                        return if (adapter.getItemViewType(position) == R.layout.load_state_view_item)
+                            if (screenOrientationIsPortrait) 1 else 2
+                        else 1
+                    }
+
+                }
+            }
+        }
+        binding.rvIconSetList.layoutManager = layoutManager
+
         binding.rvIconSetList.adapter = adapter.withLoadStateFooter(
             //header = IconSetLoadSetAdapter { adapter.retry() },
             footer = IconSetLoadSetAdapter { adapter.retry() }
@@ -126,14 +202,8 @@ class IconSetFragment : Fragment() {
             }
         }
 
-        // Use viewModel object to collect the data
-        job?.cancel()
-        job = viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.iconSetsQuery().collectLatest {
-                adapter.submitData(it)
-                Log.d(TAG, "collectLatest $it")
-            }
-        }
+        // Fetch the IconSet data
+        queryIconSetsData()
     }
 
     /**
@@ -156,5 +226,20 @@ class IconSetFragment : Fragment() {
         binding.swiperefresh.setOnRefreshListener { adapter.refresh() }
         /** Hide the progress bar on the [R.layout.load_state_view_item] as we have the swipe refresh */
         binding.loadStateViewItem.progressBar.visibility = View.GONE
+    }
+
+    /**
+     * Helper method to setup filterView setOnClickListener.
+     * It's been separated from the [setUIComponents] method as this has to be called in [onResume]
+     * as this filterView setOnClickListener has to be set to NULL on [onPause], so that
+     * setOnClickListener on filterView is not called we me move to [IconsFragment]
+     */
+    private fun setUpFilterViewClickListener() {
+        filterView.setOnClickListener {
+            val dialog = openDialogBox(requireContext(), FILTER_SCREEN.ICON_SET)
+            dialog.openFilterOption {
+                queryIconSetsData(it)
+            }
+        }
     }
 }

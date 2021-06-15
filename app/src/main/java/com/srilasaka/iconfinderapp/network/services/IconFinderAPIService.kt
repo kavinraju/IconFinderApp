@@ -49,7 +49,10 @@ interface IconFinderAPIService {
         // Setting the default count to 20
         @Query("count") count: Int = 20,
         // "after" query parameter is optional - if no need to use this, just pass null
-        @Query("after") after: Int?
+        @Query("after") after: Int?,
+        // premium - "false" or "0" means not-premium, "true" or "1" means premium,
+        // "all" means include all icons no matter if they are premium icons or not and it's the default
+        @Query("premium") premium: String = "all"
     ): IconSets
 
 

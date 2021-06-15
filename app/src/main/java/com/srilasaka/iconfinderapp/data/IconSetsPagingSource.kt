@@ -8,12 +8,15 @@ import com.srilasaka.iconfinderapp.local_database.IconsFinderDatabase
 import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
 import com.srilasaka.iconfinderapp.network.models.mapAsIconSetsEntry
 import com.srilasaka.iconfinderapp.network.services.IconFinderAPIService
+import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.*
 
 @OptIn(ExperimentalPagingApi::class)
 class IconSetsPagingSource(
     private val query: String?,
+    private val premium: PREMIUM,
     private val database: IconsFinderDatabase,
     private val networkService: IconFinderAPIService
 ) : PagingSource<Int, IconSetsEntry>() {
@@ -27,7 +30,8 @@ class IconSetsPagingSource(
         return try {
             // Get the response by making an API call
             val response = networkService.getAllPublicIconSets(
-                after = if (params is LoadParams.Append || params is LoadParams.Prepend) params.key else null
+                after = if (params is LoadParams.Append || params is LoadParams.Prepend) params.key else null,
+                premium = premium.name.lowercase(Locale.getDefault())
             )
 
             /** Convert the [IconSets] object to [IconSetsEntry] */
