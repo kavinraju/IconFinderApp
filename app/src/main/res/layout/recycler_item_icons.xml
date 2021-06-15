@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:background="@color/card_bg_color"
             android:paddingTop="@dimen/dimen_8dp"
-            android:paddingBottom="@dimen/dimen_8dp">
+            android:paddingBottom="@dimen/dimen_16dp">
 
             <ImageView
                 android:id="@+id/iv_icons_premium_free"

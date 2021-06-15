@@ -20,13 +20,14 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconsBinding
-import com.srilasaka.iconfinderapp.downloadFile
-import com.srilasaka.iconfinderapp.getPremium
-import com.srilasaka.iconfinderapp.openDialogBox
 import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentViewModel
 import com.srilasaka.iconfinderapp.ui.home_screen.icon_set.IconSetLoadSetAdapter
 import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
+import com.srilasaka.iconfinderapp.utils.downloadFile
+import com.srilasaka.iconfinderapp.utils.getPremium
+import com.srilasaka.iconfinderapp.utils.openDialogBox
+import com.srilasaka.iconfinderapp.utils.screenOrientationIsPortrait
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -203,13 +204,18 @@ class IconsFragment : Fragment() {
             downloadFile(context, downloadManager, downloadUrl, iconId.toString())
         }
         )
-        val gridLayoutManager = GridLayoutManager(context, 2)
+        val screenOrientationIsPortrait = screenOrientationIsPortrait(requireContext())
+        val gridLayoutManager = GridLayoutManager(
+            context,
+            if (screenOrientationIsPortrait) 2 else 4
+        )
         gridLayoutManager.apply {
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     // Logic to make the IconSetLoadSetAdapter at Footer of the IconsAdapter span across
                     // entire screen
-                    return if (adapter.getItemViewType(position) == R.layout.load_state_view_item) 2
+                    return if (adapter.getItemViewType(position) == R.layout.load_state_view_item)
+                        if (screenOrientationIsPortrait) 2 else 4
                     else 1
                 }
 

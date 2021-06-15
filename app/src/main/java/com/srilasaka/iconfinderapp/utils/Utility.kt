@@ -2,6 +2,7 @@ package com.srilasaka.iconfinderapp.utils
 
 import android.app.DownloadManager
 import android.content.Context
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
@@ -93,4 +94,11 @@ fun getPremium(context: Context, filterScreen: FILTER_SCREEN): PREMIUM {
         context, sharedPrefID
     )
     return PREMIUM.valueOf(sharedPreferencesUtils.getIconsIsPremiumFilterOption())
+}
+
+/**
+ * Helper function to get the stored premium value from [SharedPreferencesUtils] based on [FILTER_SCREEN]
+ */
+fun screenOrientationIsPortrait(context: Context): Boolean {
+    return context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 }
