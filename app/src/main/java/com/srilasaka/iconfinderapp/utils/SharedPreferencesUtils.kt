@@ -2,6 +2,7 @@ package com.srilasaka.iconfinderapp.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
 
 class SharedPreferencesUtils(context: Context, sharedPreferenceID: Int) {
 
@@ -60,7 +61,8 @@ class SharedPreferencesUtils(context: Context, sharedPreferenceID: Int) {
      *  @return default value is all
      */
     fun getIconSetIsPremiumFilterOption(): String {
-        return sharedPreferences.getString(FILTER_ICON_SET_IS_PREMIUM_KEY, "all") ?: "all"
+        return sharedPreferences.getString(FILTER_ICON_SET_IS_PREMIUM_KEY, PREMIUM.ALL.name)
+            ?: PREMIUM.ALL.name
     }
 
     /**
@@ -86,7 +88,8 @@ class SharedPreferencesUtils(context: Context, sharedPreferenceID: Int) {
      *  @return default value is all
      */
     fun getIconsIsPremiumFilterOption(): String {
-        return sharedPreferences.getString(FILTER_ICONS_IS_PREMIUM_KEY, "all") ?: "all"
+        return sharedPreferences.getString(FILTER_ICONS_IS_PREMIUM_KEY, PREMIUM.ALL.name)
+            ?: PREMIUM.ALL.name
     }
 
 }
