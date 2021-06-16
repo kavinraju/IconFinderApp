@@ -11,7 +11,7 @@
 
         <variable
             name="clickListener"
-            type="com.srilasaka.iconfinderapp.ui.home_screen.icons.IconsAdapter.IconsAdapterClickListener" />
+            type="com.srilasaka.iconfinderapp.ui.adapters.IconsAdapter.IconsAdapterClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

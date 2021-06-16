@@ -11,7 +11,7 @@
 
         <variable
             name="clickListener"
-            type="com.srilasaka.iconfinderapp.ui.home_screen.icon_set.IconSetAdapter.IconSetAdapterClickListener" />
+            type="com.srilasaka.iconfinderapp.ui.adapters.IconSetAdapter.IconSetAdapterClickListener" />
 
     </data>
 

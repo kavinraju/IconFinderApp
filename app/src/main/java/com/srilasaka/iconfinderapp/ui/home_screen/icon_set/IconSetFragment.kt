@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconSetBinding
+import com.srilasaka.iconfinderapp.ui.adapters.IconSetAdapter
+import com.srilasaka.iconfinderapp.ui.adapters.LoadStateAdapter
 import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentDirections
 import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentViewModel
 import com.srilasaka.iconfinderapp.ui.home_screen.icons.IconsFragment
@@ -169,7 +171,7 @@ class IconSetFragment : Fragment() {
 
         binding.rvIconSetList.adapter = adapter.withLoadStateFooter(
             //header = IconSetLoadSetAdapter { adapter.retry() },
-            footer = IconSetLoadSetAdapter { adapter.retry() }
+            footer = LoadStateAdapter { adapter.retry() }
         )
 
         lifecycleScope.launchWhenCreated {

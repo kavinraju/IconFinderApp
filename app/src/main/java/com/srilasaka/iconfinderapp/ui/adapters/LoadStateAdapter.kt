@@ -1,11 +1,11 @@
-package com.srilasaka.iconfinderapp.ui.home_screen.icon_set
+package com.srilasaka.iconfinderapp.ui.adapters
 
 import android.view.ViewGroup
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import com.srilasaka.iconfinderapp.ui.home_screen.LoadStateViewHolder
 
-class IconSetLoadSetAdapter(private val retry: () -> Unit) :
+class LoadStateAdapter(private val retry: () -> Unit) :
     LoadStateAdapter<LoadStateViewHolder>() {
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
         holder.bind(loadState)

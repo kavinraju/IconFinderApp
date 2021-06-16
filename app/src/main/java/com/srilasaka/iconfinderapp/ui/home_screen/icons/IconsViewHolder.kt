@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.srilasaka.iconfinderapp.databinding.RecyclerItemIconsBinding
 import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
+import com.srilasaka.iconfinderapp.ui.adapters.IconsAdapter
 
 /**
  * View Holder of the IconSet RecyclerView list item

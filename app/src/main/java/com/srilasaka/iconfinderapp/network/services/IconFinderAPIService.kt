@@ -79,6 +79,20 @@ interface IconFinderAPIService {
         @Path("iconset_id") iconsetID: Int
     ): Deferred<IconSetDetails>
 
+    @Headers("Authorization: ${EndPoints.AuthorizationHeader}")
+    @GET("iconsets/{iconset_id}/icons")
+    suspend fun getIconSetIcons(
+        @Path("iconset_id") iconsetID: Int,
+        // Setting the default count to 20
+        @Query("count") count: Int = 20,
+        // offset value ranges from 0 - 100
+        @Query("offset") offset: Int,
+        // premium - "false" or "0" means not-premium, "true" or "1" means premium,
+        // "all" means include all icons no matter if they are premium icons or not and it's the default
+        @Query("premium") premium: String = "all"
+    ): Icons
+
+
     companion object {
         fun create(): IconFinderAPIService = IconFinderAPI.retrofitService
     }

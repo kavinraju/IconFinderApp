@@ -1,17 +1,23 @@
 package com.srilasaka.iconfinderapp.ui.iconset_details
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import com.srilasaka.iconfinderapp.data.IconFinderRepository
 import com.srilasaka.iconfinderapp.local_database.IconsFinderDatabase
 import com.srilasaka.iconfinderapp.local_database.icon_set_details_table.IconSetDetailsEntry
-import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
-import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
 import com.srilasaka.iconfinderapp.network.services.IconFinderAPIService
 import com.srilasaka.iconfinderapp.network.utils.State
 import com.srilasaka.iconfinderapp.ui.models.BasicDetailsModel
+import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
+import com.srilasaka.iconfinderapp.ui.utils.UiModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
 class IconSetDetailsFragmentViewModel(application: Application, iconSetID: Int, price: String) :
@@ -53,6 +59,8 @@ class IconSetDetailsFragmentViewModel(application: Application, iconSetID: Int, 
     private val _basicDetailsModel = MutableLiveData<BasicDetailsModel>()
     val basicDetailsModel: LiveData<BasicDetailsModel> = _basicDetailsModel
 
+    private var iconSetIconsResult: Flow<PagingData<UiModel.IconsDataItem>>? = null
+
     init {
         _iconSetID.value = iconSetID
         _price.value = price
@@ -90,6 +98,33 @@ class IconSetDetailsFragmentViewModel(application: Application, iconSetID: Int, 
     }
 
     /**
+     * iconSetIcons() function queries the data from the [IconFinderRepository.getIconSetIcons].
+     */
+    fun fetchIconSetIcons(
+        iconsetID: Int,
+        premium: PREMIUM
+    ): Flow<PagingData<UiModel.IconsDataItem>> {
+        Log.d(TAG, "iconSetIcons")
+        val lastResult = iconSetIconsResult
+        if (lastResult != null) {
+            return lastResult
+        }
+
+        val newResult: Flow<PagingData<UiModel.IconsDataItem>> =
+            repository.getIconSetIcons(iconsetID, premium)
+                .map { pagingData ->
+                    pagingData.map {
+                        UiModel.IconsDataItem(it)
+                    }
+                }
+                .cachedIn(viewModelScope)
+
+        iconSetIconsResult = newResult
+        return newResult
+
+    }
+
+    /**
      * Factory for constructing HomeFragmentViewModel
      */
     class Factory(
@@ -105,13 +140,4 @@ class IconSetDetailsFragmentViewModel(application: Application, iconSetID: Int, 
             throw  IllegalArgumentException("Unable to construct ViewModel")
         }
     }
-}
-
-/**
- * UiModel is a sealed class which could host multiple data items into a single class type and
- * we can refer to this generic class.
- */
-sealed class UiModel {
-    data class IconSetDataItem(val iconSetsEntry: IconSetsEntry) : UiModel()
-    data class IconsDataItem(val iconsEntry: IconsEntry) : UiModel()
 }

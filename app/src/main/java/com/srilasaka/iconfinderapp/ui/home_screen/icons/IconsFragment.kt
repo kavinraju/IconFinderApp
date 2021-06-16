@@ -20,8 +20,9 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconsBinding
+import com.srilasaka.iconfinderapp.ui.adapters.IconsAdapter
+import com.srilasaka.iconfinderapp.ui.adapters.LoadStateAdapter
 import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentViewModel
-import com.srilasaka.iconfinderapp.ui.home_screen.icon_set.IconSetLoadSetAdapter
 import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
 import com.srilasaka.iconfinderapp.utils.downloadFile
@@ -222,7 +223,7 @@ class IconsFragment : Fragment() {
 
         binding.rvSearchIconsList.adapter = adapter.withLoadStateFooter(
             //header = IconSetLoadSetAdapter { adapter.retry() },
-            footer = IconSetLoadSetAdapter { adapter.retry() }
+            footer = LoadStateAdapter { adapter.retry() }
         )
 
         lifecycleScope.launchWhenCreated {

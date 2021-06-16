@@ -11,10 +11,9 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.srilasaka.iconfinderapp.data.IconFinderRepository
 import com.srilasaka.iconfinderapp.local_database.IconsFinderDatabase
-import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
-import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
 import com.srilasaka.iconfinderapp.network.services.IconFinderAPIService
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
+import com.srilasaka.iconfinderapp.ui.utils.UiModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -79,13 +78,4 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
             throw  IllegalArgumentException("Unable to construct ViewModel")
         }
     }
-}
-
-/**
- * UiModel is a sealed class which could host multiple data items into a single class type and
- * we can refer to this generic class.
- */
-sealed class UiModel {
-    data class IconSetDataItem(val iconSetsEntry: IconSetsEntry) : UiModel()
-    data class IconsDataItem(val iconsEntry: IconsEntry) : UiModel()
 }

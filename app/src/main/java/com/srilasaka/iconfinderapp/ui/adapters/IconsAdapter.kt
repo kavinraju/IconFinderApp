@@ -1,39 +1,40 @@
-package com.srilasaka.iconfinderapp.ui.home_screen.icon_set
+package com.srilasaka.iconfinderapp.ui.adapters
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.srilasaka.iconfinderapp.R
-import com.srilasaka.iconfinderapp.ui.home_screen.UiModel
+import com.srilasaka.iconfinderapp.ui.home_screen.icons.IconsViewHolder
+import com.srilasaka.iconfinderapp.ui.utils.UiModel
 
-class IconSetAdapter(private val clickListener: IconSetAdapterClickListener) :
-    PagingDataAdapter<UiModel.IconSetDataItem, ViewHolder>(UI_MODEL_COMPARATOR) {
+class IconsAdapter(private val clickListener: IconsAdapterClickListener) :
+    PagingDataAdapter<UiModel.IconsDataItem, ViewHolder>(UI_MODEL_COMPARATOR) {
 
     companion object {
         private val UI_MODEL_COMPARATOR =
-            object : DiffUtil.ItemCallback<UiModel.IconSetDataItem>() {
+            object : DiffUtil.ItemCallback<UiModel.IconsDataItem>() {
                 override fun areContentsTheSame(
-                    oldItem: UiModel.IconSetDataItem,
-                    newItem: UiModel.IconSetDataItem
+                    oldItem: UiModel.IconsDataItem,
+                    newItem: UiModel.IconsDataItem
                 ): Boolean {
-                    //return (oldItem is UiModel.IconSetDataItem && newItem is UiModel.IconSetDataItem) &&
-                    return oldItem.iconSetsEntry.iconset_id == newItem.iconSetsEntry.iconset_id
+                    //return (oldItem is UiModel.IconsDataItem && newItem is UiModel.IconsDataItem) &&
+                    return oldItem.iconsEntry.icon_id == newItem.iconsEntry.icon_id
                 }
 
                 override fun areItemsTheSame(
-                    oldItem: UiModel.IconSetDataItem,
-                    newItem: UiModel.IconSetDataItem
+                    oldItem: UiModel.IconsDataItem,
+                    newItem: UiModel.IconsDataItem
                 ): Boolean =
                     oldItem == newItem
             }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (viewType == R.layout.recycler_item_icons) {
-            IconSetViewHolder.from(parent)
+        return if (viewType == R.layout.recycler_item_icon_set) {
+            IconsViewHolder.from(parent)
         } else {
-            IconSetViewHolder.from(parent)
+            IconsViewHolder.from(parent)
         }
     }
 
@@ -43,7 +44,7 @@ class IconSetAdapter(private val clickListener: IconSetAdapterClickListener) :
             position < itemCount -> {
 
                 when (getItem(position)) {
-                    is UiModel.IconSetDataItem -> R.layout.recycler_item_icons
+                    is UiModel.IconsDataItem -> R.layout.recycler_item_icon_set
                     null -> throw UnsupportedOperationException("Unknown view")
                     else -> throw UnsupportedOperationException("Unknown view")
                 }
@@ -61,8 +62,8 @@ class IconSetAdapter(private val clickListener: IconSetAdapterClickListener) :
         val uiModel = getItem(position)
         uiModel.let {
             when (uiModel) {
-                is UiModel.IconSetDataItem -> (holder as IconSetViewHolder).bind(
-                    uiModel.iconSetsEntry,
+                is UiModel.IconsDataItem -> (holder as IconsViewHolder).bind(
+                    uiModel.iconsEntry,
                     clickListener
                 )
             }
@@ -72,8 +73,8 @@ class IconSetAdapter(private val clickListener: IconSetAdapterClickListener) :
     /**
      * Click Listener
      */
-    class IconSetAdapterClickListener(val iconSetItemClickListener: (iconSetID: Int, price: String) -> Unit) {
-        fun onClickIconSetItem(iconSetID: Int, price: String) =
-            iconSetItemClickListener(iconSetID, price)
+    class IconsAdapterClickListener(val downloadClickListener: (downloadUrl: String, iconID: Int) -> Unit) {
+        fun onClickDownloadButton(downloadUrl: String, iconID: Int) =
+            downloadClickListener(downloadUrl, iconID)
     }
 }

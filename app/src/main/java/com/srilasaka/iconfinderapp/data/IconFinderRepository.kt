@@ -28,6 +28,11 @@ class IconFinderRepository(
 ) {
     private val TAG: String? = IconFinderRepository::class.simpleName
 
+    /**
+     * getPublicIconSets() fetches the IconSets.
+     *
+     * @param premium - the premium preference set by the user
+     */
     fun getPublicIconSets(premium: PREMIUM): Flow<PagingData<IconSetsEntry>> {
         Log.d(TAG, "New Icon Sets query")
 
@@ -49,6 +54,7 @@ class IconFinderRepository(
      * searchIcons() searches the Icons that matches the @param query.
      *
      * @param query - text typed the user for querying the icons
+     * @param premium - the premium preference set by the user
      */
     fun searchIcons(query: String, premium: PREMIUM): Flow<PagingData<IconsEntry>> {
         Log.d(TAG, "New Icons query")
@@ -89,6 +95,29 @@ class IconFinderRepository(
 
 
     }.flowOn(Dispatchers.IO)
+
+    /**
+     * getIconSetDetails() fetches the Icons belonging to the IconSet with ID @param iconSetId.
+     *
+     * @param iconSetId - text typed the user for querying the icons
+     * @param premium - the premium preference set by the user
+     */
+    fun getIconSetIcons(iconSetID: Int, premium: PREMIUM): Flow<PagingData<IconsEntry>> {
+        Log.d(TAG, "New IconSet Icons query")
+
+        //val pagingSourceFactory = { database.iconSetsDao.getIconSets() }
+
+        return Pager(
+            PagingConfig(pageSize = NUMBER_OF_ITEMS_TO_FETCH, enablePlaceholders = false)
+        ) {
+            IconSetIconsPagingSource(
+                iconsetID = iconSetID,
+                isPREMIUM = premium,
+                database = database,
+                networkService = service
+            )
+        }.flow
+    }
 
     companion object {
         const val NUMBER_OF_ITEMS_TO_FETCH = 20
