@@ -16,7 +16,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/material_card_view_icons_outer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_4dp"
         android:clickable="true"
@@ -79,7 +79,9 @@
                 style="@style/Widget.App.Button.UnelevatedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_16dp"
                 android:layout_marginTop="@dimen/dimen_8dp"
+                android:layout_marginEnd="@dimen/dimen_16dp"
                 android:onClick="@{()->clickListener.onClickDownloadButton(model.format_64_download_url, model.icon_id)}"
                 android:text="@string/download"
                 app:icon="@drawable/icon_download"

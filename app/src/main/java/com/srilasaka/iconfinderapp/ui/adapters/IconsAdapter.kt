@@ -53,6 +53,10 @@ class IconsAdapter(private val clickListener: IconsAdapterClickListener) :
             position == itemCount -> {
                 R.layout.load_state_view_item
             }
+            // For the footer item when displaying in the [IconSetDetailsFragment] screen
+            position == itemCount + 1 -> {
+                R.layout.load_state_view_item
+            }
             else -> throw UnsupportedOperationException("Unknown view")
         }
 

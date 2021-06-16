@@ -105,10 +105,6 @@ class IconSetDetailsFragmentViewModel(application: Application, iconSetID: Int, 
         premium: PREMIUM
     ): Flow<PagingData<UiModel.IconsDataItem>> {
         Log.d(TAG, "iconSetIcons")
-        val lastResult = iconSetIconsResult
-        if (lastResult != null) {
-            return lastResult
-        }
 
         val newResult: Flow<PagingData<UiModel.IconsDataItem>> =
             repository.getIconSetIcons(iconsetID, premium)
@@ -123,6 +119,16 @@ class IconSetDetailsFragmentViewModel(application: Application, iconSetID: Int, 
         return newResult
 
     }
+
+    /**
+     * Getter of iconSetIDLiveData
+     */
+    fun getIconSetID(): Int = iconSetIDLiveData.value!!
+
+    /**
+     * Getter of price
+     */
+    fun getPrice(): String = price.value!!
 
     /**
      * Factory for constructing HomeFragmentViewModel

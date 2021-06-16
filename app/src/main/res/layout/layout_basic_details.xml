@@ -4,16 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!-- TODO: Need to change this model type-->
+
         <variable
             name="model"
             type="com.srilasaka.iconfinderapp.ui.models.BasicDetailsModel" />
+
+        <variable
+            name="clickListener"
+            type="com.srilasaka.iconfinderapp.ui.adapters.BasicDetailsAdapter.BasicDetailsAdapterClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_layout_basic_details"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_details_name"
@@ -61,11 +65,11 @@
             android:layout_marginStart="@dimen/dimen_4dp"
             android:layout_marginEnd="@dimen/dimen_16dp"
             android:fontFamily="@font/montserrat_medium"
-            app:text="@{model.type}"
             android:textColor="@color/text_color"
             android:textSize="@dimen/dimen_18sp"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_details_type_title"
             app:layout_constraintStart_toEndOf="@id/tv_details_type_title"
+            app:text="@{model.type}"
             tools:text="@string/sample_string_fill" />
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -172,12 +176,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_8dp"
             android:fontFamily="@font/montserrat_medium"
-            app:loadHtmlText="@{model.readme}"
             android:textColor="@color/text_color"
             android:textSize="@dimen/dimen_18sp"
             app:layout_constraintEnd_toEndOf="@id/iv_details_premium_free"
             app:layout_constraintStart_toStartOf="@id/tv_details_name"
             app:layout_constraintTop_toBottomOf="@id/tv_info_title"
+            app:loadHtmlText="@{model.readme}"
             tools:text="@string/sample_string_info" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

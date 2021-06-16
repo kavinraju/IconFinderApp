@@ -55,7 +55,7 @@ class IconsFragment : Fragment() {
     private val downloadManager: DownloadManager by lazy {
         context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
     }
-    private lateinit var queryString: String
+    private var queryString: String = DEFAULT_QUERY
 
     companion object {
         private const val LAST_SEARCH_QUERY_SAVED_INSTANCE_KEY = "last_search_query"
