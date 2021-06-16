@@ -38,9 +38,10 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
      */
     fun iconSetsQuery(premium: PREMIUM): Flow<PagingData<UiModel.IconSetDataItem>> {
         Log.d(TAG, "iconSetsQuery")
-        val newResult: Flow<PagingData<UiModel.IconSetDataItem>> = repository.getPublicIconSets(premium)
-            .map { pagingData -> pagingData.map { UiModel.IconSetDataItem(it) } }
-            .cachedIn(viewModelScope)
+        val newResult: Flow<PagingData<UiModel.IconSetDataItem>> =
+            repository.getPublicIconSets(premium)
+                .map { pagingData -> pagingData.map { UiModel.IconSetDataItem(it) } }
+                .cachedIn(viewModelScope)
 
         iconSetsQueryResult = newResult
         return newResult

@@ -132,11 +132,15 @@ class IconSetFragment : Fragment() {
      * Helper method to initialize [IconSetAdapter] and related objects
      */
     private fun initAdapter() {
-        adapter = IconSetAdapter(IconSetAdapter.IconSetAdapterClickListener { iconSetID: Int ->
-            findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToIconSetDetailsFragment(iconSetID)
-            )
-        })
+        adapter =
+            IconSetAdapter(IconSetAdapter.IconSetAdapterClickListener { iconSetID: Int, price: String ->
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToIconSetDetailsFragment(
+                        iconSetID,
+                        price
+                    )
+                )
+            })
 
         // Get the screen orientation and set the layoutManager of binding.rvIconSetList accordingly.
         // Use LinearLayoutManager for Portrait mode.

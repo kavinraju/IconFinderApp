@@ -35,7 +35,7 @@ fun List<Iconset>.mapAsIconSetsEntry(): List<IconSetsEntry> {
         val currencySymbol =
             if (it.prices != null) Currency.getInstance(it.prices[0].currency).symbol else null
         val firstPrice =
-            if (currencySymbol != null) "${it.prices?.get(0)?.price} ${currencySymbol}" else ""
+            if (currencySymbol != null) "${it.prices?.get(0)?.price} ${currencySymbol}" else "N/A"
 
         IconSetsEntry(
             it.are_all_icons_glyph,

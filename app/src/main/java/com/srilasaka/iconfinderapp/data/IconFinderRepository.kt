@@ -5,11 +5,19 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.srilasaka.iconfinderapp.local_database.IconsFinderDatabase
+import com.srilasaka.iconfinderapp.local_database.icon_set_details_table.IconSetDetailsEntry
 import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
 import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
+import com.srilasaka.iconfinderapp.network.models.mapAsIconSetDetailsEntry
 import com.srilasaka.iconfinderapp.network.services.IconFinderAPIService
+import com.srilasaka.iconfinderapp.network.utils.State
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import retrofit2.HttpException
+import java.io.IOException
 
 /**
  * This Repository works with the local and the remote data sources.
@@ -58,6 +66,29 @@ class IconFinderRepository(
             )
         }.flow
     }
+
+    /**
+     * getIconSetDetails() fetches the details of the IconSet with @param iconsetID
+     */
+    fun getIconSetDetails(iconsetID: Int) = flow<State<IconSetDetailsEntry>> {
+        // Emit Loading state for indicating the loading process
+        emit(State.Loading())
+
+        try {
+            val response = service.getIconSetDetails(iconsetID).await()
+            val iconSetDetailsEntry = response.mapAsIconSetDetailsEntry()
+
+            emit(State.Success(iconSetDetailsEntry))
+        } catch (exception: IOException) {
+            Log.e(TAG, "exception = ${exception}")
+            emit(State.failed(exception.toString()))
+        } catch (exception: HttpException) {
+            Log.e(TAG, "exception = ${exception}")
+            emit(State.failed(exception.toString()))
+        }
+
+
+    }.flowOn(Dispatchers.IO)
 
     companion object {
         const val NUMBER_OF_ITEMS_TO_FETCH = 20

@@ -7,43 +7,43 @@
         <!-- TODO: Need to change this model type-->
         <variable
             name="model"
-            type="com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry" />
+            type="com.srilasaka.iconfinderapp.ui.models.BasicDetailsModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_layout_basic_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv_icon_set_details_details_name"
+            android:id="@+id/tv_details_name"
             android:layout_width="@dimen/dimen_0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_32dp"
-            android:layout_marginTop="@dimen/dimen_16dp"
             android:layout_marginEnd="@dimen/dimen_16dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="@{model.name}"
+            android:text="@{model.title}"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_30sp"
-            app:layout_constraintEnd_toStartOf="@id/iv_icon_set_details_details_premium_free"
+            app:layout_constraintEnd_toStartOf="@id/iv_details_premium_free"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/sample_string_foods" />
 
         <ImageView
-            android:id="@+id/iv_icon_set_details_details_premium_free"
+            android:id="@+id/iv_details_premium_free"
             android:layout_width="@dimen/dimen_62dp"
             android:layout_height="@dimen/dimen_62dp"
             android:layout_marginEnd="@dimen/dimen_32dp"
             android:contentDescription="@string/this_is_the_subscription_type_premium_or_free"
             android:elevation="@dimen/dimen_2dp"
-
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_icon_set_details_details_name"
+            app:layout_constraintTop_toTopOf="@id/tv_details_name"
+            app:loadSubscriptionTypeIcon="@{model.isPremium}"
             app:srcCompat="@drawable/icon_premium" />
 
         <TextView
-            android:id="@+id/tv_icon_set_details_details_type_title"
+            android:id="@+id/tv_details_type_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_4dp"
@@ -51,21 +51,21 @@
             android:text="@string/type"
             android:textColor="@color/text_color"
             android:textSize="@dimen/dimen_18sp"
-            app:layout_constraintStart_toStartOf="@id/tv_icon_set_details_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_icon_set_details_details_name" />
+            app:layout_constraintStart_toStartOf="@id/tv_details_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_details_name" />
 
         <TextView
-            android:id="@+id/tv_icon_set_details_type"
+            android:id="@+id/tv_type"
             android:layout_width="@dimen/dimen_0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_4dp"
             android:layout_marginEnd="@dimen/dimen_16dp"
             android:fontFamily="@font/montserrat_medium"
-            android:text="@{model.type}"
+            app:text="@{model.type}"
             android:textColor="@color/text_color"
             android:textSize="@dimen/dimen_18sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_icon_set_details_details_type_title"
-            app:layout_constraintStart_toEndOf="@id/tv_icon_set_details_details_type_title"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_details_type_title"
+            app:layout_constraintStart_toEndOf="@id/tv_details_type_title"
             tools:text="@string/sample_string_fill" />
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -74,50 +74,50 @@
             android:layout_height="@dimen/dimen_13dp"
             android:layout_marginStart="@dimen/dimen_8dp"
             android:src="@drawable/icon_info"
-            app:layout_constraintBottom_toBottomOf="@id/tv_icon_set_details_details_type_title"
-            app:layout_constraintStart_toEndOf="@id/tv_icon_set_details_type"
-            app:layout_constraintTop_toTopOf="@id/tv_icon_set_details_details_type_title" />
+            app:layout_constraintBottom_toBottomOf="@id/tv_details_type_title"
+            app:layout_constraintStart_toEndOf="@id/tv_type"
+            app:layout_constraintTop_toTopOf="@id/tv_details_type_title" />
 
         <TextView
-            android:id="@+id/tv_icon_set_details_creator_name"
+            android:id="@+id/tv_creator_name"
             android:layout_width="@dimen/dimen_0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_16dp"
             android:layout_marginEnd="@dimen/dimen_16dp"
             android:fontFamily="@font/montserrat_medium"
-            android:text="@{model.author_name}"
+            android:text="@{model.creatorName}"
             android:textColor="@color/text_color_purple"
             android:textSize="@dimen/dimen_24sp"
-            app:layout_constraintEnd_toStartOf="@id/tv_icon_set_details_price"
-            app:layout_constraintStart_toStartOf="@id/tv_icon_set_details_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_icon_set_details_details_type_title"
+            app:layout_constraintEnd_toStartOf="@id/tv_price"
+            app:layout_constraintStart_toStartOf="@id/tv_details_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_details_type_title"
             tools:text="@string/sample_string_james_wan" />
 
         <TextView
-            android:id="@+id/tv_icon_set_details_price"
+            android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium"
             android:text="@{model.price}"
             android:textColor="@color/purple"
             android:textSize="@dimen/dimen_30sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_icon_set_details_creator_name"
-            app:layout_constraintEnd_toEndOf="@id/iv_icon_set_details_details_premium_free"
-            app:layout_constraintTop_toTopOf="@id/tv_icon_set_details_creator_name"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_creator_name"
+            app:layout_constraintEnd_toEndOf="@id/iv_details_premium_free"
+            app:layout_constraintTop_toTopOf="@id/tv_creator_name"
             tools:text="@string/sample_string_price_20" />
 
         <TextView
-            android:id="@+id/tv_icon_set_details_website_url"
+            android:id="@+id/tv_website_url"
             android:layout_width="@dimen/dimen_0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_8dp"
             android:fontFamily="@font/montserrat_medium"
-            android:text="@{model.price}"
+            android:text="@{model.websiteUrl}"
             android:textColor="@color/purple"
             android:textSize="@dimen/dimen_18sp"
-            app:layout_constraintEnd_toEndOf="@id/iv_icon_set_details_details_premium_free"
-            app:layout_constraintStart_toStartOf="@id/tv_icon_set_details_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_icon_set_details_creator_name"
+            app:layout_constraintEnd_toEndOf="@id/iv_details_premium_free"
+            app:layout_constraintStart_toStartOf="@id/tv_details_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_creator_name"
             tools:text="@string/sample_string_website_url" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -128,7 +128,7 @@
             app:layout_constraintGuide_percent="0.45" />
 
         <TextView
-            android:id="@+id/tv_icon_set_details_license_type_title"
+            android:id="@+id/tv_license_type_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_8dp"
@@ -136,25 +136,25 @@
             android:text="@string/license_type"
             android:textColor="@color/text_color"
             android:textSize="@dimen/dimen_14sp"
-            app:layout_constraintStart_toStartOf="@id/tv_icon_set_details_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_icon_set_details_website_url" />
+            app:layout_constraintStart_toStartOf="@id/tv_details_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_website_url" />
 
         <TextView
-            android:id="@+id/tv_icon_set_details_license_type"
+            android:id="@+id/tv_license_type"
             android:layout_width="@dimen/dimen_0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_4dp"
             android:fontFamily="@font/montserrat_medium"
-            android:text="@{model.license_name}"
+            android:text="@{model.licenseName}"
             android:textColor="@color/purple"
             android:textSize="@dimen/dimen_14sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_icon_set_details_license_type_title"
-            app:layout_constraintEnd_toEndOf="@id/iv_icon_set_details_details_premium_free"
-            app:layout_constraintStart_toEndOf="@id/tv_icon_set_details_license_type_title"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_license_type_title"
+            app:layout_constraintEnd_toEndOf="@id/iv_details_premium_free"
+            app:layout_constraintStart_toEndOf="@id/tv_license_type_title"
             tools:text="@string/sample_string_creative_commons_license" />
 
         <TextView
-            android:id="@+id/tv_icon_set_details_info_title"
+            android:id="@+id/tv_info_title"
             android:layout_width="@dimen/dimen_0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_16dp"
@@ -162,26 +162,27 @@
             android:text="@string/info"
             android:textColor="@color/text_color"
             android:textSize="@dimen/dimen_24sp"
-            app:layout_constraintEnd_toEndOf="@id/iv_icon_set_details_details_premium_free"
-            app:layout_constraintStart_toStartOf="@id/tv_icon_set_details_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_icon_set_details_license_type_title" />
+            app:layout_constraintEnd_toEndOf="@id/iv_details_premium_free"
+            app:layout_constraintStart_toStartOf="@id/tv_details_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_license_type_title" />
 
         <TextView
-            android:id="@+id/tv_icon_set_details_info_description"
+            android:id="@+id/tv_info_description"
             android:layout_width="@dimen/dimen_0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_8dp"
             android:fontFamily="@font/montserrat_medium"
+            app:loadHtmlText="@{model.readme}"
             android:textColor="@color/text_color"
             android:textSize="@dimen/dimen_18sp"
-            app:layout_constraintEnd_toEndOf="@id/iv_icon_set_details_details_premium_free"
-            app:layout_constraintStart_toStartOf="@id/tv_icon_set_details_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_icon_set_details_info_title"
+            app:layout_constraintEnd_toEndOf="@id/iv_details_premium_free"
+            app:layout_constraintStart_toStartOf="@id/tv_details_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_info_title"
             tools:text="@string/sample_string_info" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
     <!--
     Just for reference, should be removed this after using
-     android:loadSubscriptionTypeIcon="@{model.is_premium}"
+
     -->

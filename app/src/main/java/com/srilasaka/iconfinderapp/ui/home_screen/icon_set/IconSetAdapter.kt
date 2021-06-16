@@ -72,7 +72,8 @@ class IconSetAdapter(private val clickListener: IconSetAdapterClickListener) :
     /**
      * Click Listener
      */
-    class IconSetAdapterClickListener(val iconSetItemClickListener: (iconSetID: Int) -> Unit) {
-        fun onClickIconSetItem(iconSetID: Int) = iconSetItemClickListener(iconSetID)
+    class IconSetAdapterClickListener(val iconSetItemClickListener: (iconSetID: Int, price: String) -> Unit) {
+        fun onClickIconSetItem(iconSetID: Int, price: String) =
+            iconSetItemClickListener(iconSetID, price)
     }
 }

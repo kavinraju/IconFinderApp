@@ -21,5 +21,9 @@
         <argument
             android:name="iconSetID"
             app:argType="integer" />
+
+        <argument
+            android:name="price"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -49,5 +51,13 @@ fun ImageView.loadImageUsingGlide(imageUrl: String?) {
             })
     } else {
         setImageResource(R.drawable.icon_download)
+    }
+}
+
+@BindingAdapter("loadHtmlText")
+fun TextView.loadHtmlText(htmlString: String?) {
+    if (!htmlString.isNullOrEmpty()) {
+        val spanned = HtmlCompat.fromHtml(htmlString, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        text = spanned
     }
 }

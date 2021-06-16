@@ -25,7 +25,7 @@ data class IconSetDetailsEntry(
     val is_premium: Boolean?,
 
     /** Deconstructed the first [Price] & [License] info into individual columns*/
-    val price: String?,
+    //val price: String?,
     val license_id: String?,
     val license_name: String?,
     val license_scope: String?,
