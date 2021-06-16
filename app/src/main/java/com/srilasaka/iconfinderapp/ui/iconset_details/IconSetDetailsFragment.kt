@@ -171,9 +171,9 @@ class IconSetDetailsFragment : Fragment() {
                 downloadFile(context, downloadManager, downloadUrl, iconId.toString())
             },
             iconItemClickListener = { iconID ->
-                /*findNavController().navigate(
-                    HomeFragmentDirections.actionHomeFragmentToIconDetailsFragment(iconID)
-                )*/
+                findNavController().navigate(
+                    IconSetDetailsFragmentDirections.actionIconSetDetailsFragmentToIconDetailsFragment(iconID)
+                )
             }
         )
         )

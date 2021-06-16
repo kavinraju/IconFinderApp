@@ -55,6 +55,7 @@
             android:text="@string/type"
             android:textColor="@color/text_color"
             android:textSize="@dimen/dimen_18sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/tv_details_name"
             app:layout_constraintTop_toBottomOf="@id/tv_details_name" />
 
@@ -83,10 +84,22 @@
             app:layout_constraintTop_toTopOf="@id/tv_details_type_title" />
 
         <TextView
+            android:id="@+id/tv_creator_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_16dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Creator Name:"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/dimen_14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tv_details_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_details_type_title" />
+
+        <TextView
             android:id="@+id/tv_creator_name"
             android:layout_width="@dimen/dimen_0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_16dp"
             android:layout_marginEnd="@dimen/dimen_16dp"
             android:fontFamily="@font/montserrat_medium"
             android:text="@{model.creatorName}"
@@ -94,7 +107,7 @@
             android:textSize="@dimen/dimen_24sp"
             app:layout_constraintEnd_toStartOf="@id/tv_price"
             app:layout_constraintStart_toStartOf="@id/tv_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_details_type_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_creator_name_title"
             tools:text="@string/sample_string_james_wan" />
 
         <TextView
@@ -111,17 +124,33 @@
             tools:text="@string/sample_string_price_20" />
 
         <TextView
+            android:id="@+id/tv_website_url_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/url"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/dimen_14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tv_creator_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_creator_name" />
+
+        <TextView
             android:id="@+id/tv_website_url"
             android:layout_width="@dimen/dimen_0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_8dp"
             android:layout_marginTop="@dimen/dimen_8dp"
+            android:autoLink="all"
             android:fontFamily="@font/montserrat_medium"
             android:text="@{model.websiteUrl}"
             android:textColor="@color/purple"
-            android:textSize="@dimen/dimen_18sp"
+            android:textSize="@dimen/dimen_14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_website_url_title"
             app:layout_constraintEnd_toEndOf="@id/iv_details_premium_free"
-            app:layout_constraintStart_toStartOf="@id/tv_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_creator_name"
+            app:layout_constraintStart_toEndOf="@id/tv_website_url_title"
+            app:makeAsHyperLink="@{model.websiteUrl}"
             tools:text="@string/sample_string_website_url" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -140,8 +169,9 @@
             android:text="@string/license_type"
             android:textColor="@color/text_color"
             android:textSize="@dimen/dimen_14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/tv_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_website_url" />
+            app:layout_constraintTop_toBottomOf="@id/tv_website_url_title" />
 
         <TextView
             android:id="@+id/tv_license_type"
@@ -166,6 +196,7 @@
             android:text="@string/info"
             android:textColor="@color/text_color"
             android:textSize="@dimen/dimen_24sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/iv_details_premium_free"
             app:layout_constraintStart_toStartOf="@id/tv_details_name"
             app:layout_constraintTop_toBottomOf="@id/tv_license_type_title" />

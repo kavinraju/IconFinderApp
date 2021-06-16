@@ -92,12 +92,6 @@ class IconDetailsFragment : Fragment() {
 
         })
 
-        viewModel.basicDetailsModel.observe(viewLifecycleOwner, { baseDetailsModel ->
-            // Set the RecyclerView iconsAdapter for IconSet Icons fetched.
-            // Initialize here as we need baseDetailsModel data for the adapter
-            setUpIconDetailsOnUI(baseDetailsModel)
-        })
-
         // Refresh the iconsAdapter when button retry is clicked.
         binding.loadStateViewItem.btnRetry.setOnClickListener {
             viewModel.refreshIconDetails()

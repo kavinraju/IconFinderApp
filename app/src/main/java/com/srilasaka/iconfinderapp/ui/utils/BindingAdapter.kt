@@ -61,3 +61,11 @@ fun TextView.loadHtmlText(htmlString: String?) {
         text = spanned
     }
 }
+
+@BindingAdapter("makeAsHyperLink")
+fun TextView.makeAsHyperLink(link: String?) {
+    if (!link.isNullOrEmpty()) {
+        isClickable = true
+        linksClickable = true
+    }
+}

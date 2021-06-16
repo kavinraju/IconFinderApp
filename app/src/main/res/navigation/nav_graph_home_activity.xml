@@ -28,6 +28,9 @@
         <argument
             android:name="price"
             app:argType="string" />
+        <action
+            android:id="@+id/action_iconSetDetailsFragment_to_iconDetailsFragment"
+            app:destination="@id/iconDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/iconDetailsFragment"
