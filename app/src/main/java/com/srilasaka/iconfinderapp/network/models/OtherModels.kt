@@ -8,6 +8,17 @@ data class Author(
     val website_url: String?
 )
 
+data class AuthorDetails(
+    val company: String?,
+    val iconsets_count: Int?,
+    val is_designer: Boolean?,
+    val name: String?,
+    val user_id: Int?,
+    val author_id: Int?,
+    val username: String?,
+    val website_url: String?
+)
+
 data class Category(
     val identifier: String?,
     val name: String?

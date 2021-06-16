@@ -16,12 +16,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconsBinding
 import com.srilasaka.iconfinderapp.ui.adapters.IconsAdapter
 import com.srilasaka.iconfinderapp.ui.adapters.LoadStateAdapter
+import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentDirections
 import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentViewModel
 import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
@@ -197,10 +199,21 @@ class IconsFragment : Fragment() {
      * Helper method to initialize [IconsAdapter] and related objects
      */
     private fun initAdapter() {
-        adapter = IconsAdapter(IconsAdapter.IconsAdapterClickListener { downloadUrl, iconId ->
-            downloadFile(context, downloadManager, downloadUrl, iconId.toString())
-        }
-        )
+        adapter = IconsAdapter(IconsAdapter.IconsAdapterClickListener(
+            downloadClickListener = { downloadUrl, iconId ->
+                downloadFile(
+                    context,
+                    downloadManager,
+                    downloadUrl,
+                    iconId.toString()
+                )
+            },
+            iconItemClickListener = { iconID ->
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToIconDetailsFragment(iconID)
+                )
+            }
+        ))
         val screenOrientationIsPortrait = screenOrientationIsPortrait(requireContext())
         val gridLayoutManager = GridLayoutManager(
             context,
@@ -229,39 +242,40 @@ class IconsFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest { loadStates ->
 
-                // Show the Swipe Refresh when the adapter LoadState is Loading
-                binding.swipeRefresh.isRefreshing =
-                    loadStates.source.refresh is LoadState.Loading
-                Log.d(TAG, "loadStateFlow loadStates = $loadStates")
-                Log.d(
-                    TAG,
-                    "loadStateFlow loadStates.mediator?.refresh = ${loadStates.source.refresh}"
-                )
+                if (_binding != null) {
+                    // Show the Swipe Refresh when the adapter LoadState is Loading
+                    binding.swipeRefresh.isRefreshing =
+                        loadStates.source.refresh is LoadState.Loading
+                    Log.d(TAG, "loadStateFlow loadStates = $loadStates")
+                    Log.d(
+                        TAG,
+                        "loadStateFlow loadStates.mediator?.refresh = ${loadStates.source.refresh}"
+                    )
 
-                // Show list is empty
-                val isEmptyList =
-                    loadStates.source.refresh is LoadState.NotLoading && adapter.itemCount == 0
-                showEmptyList(isEmptyList)
+                    // Show list is empty
+                    val isEmptyList =
+                        loadStates.source.refresh is LoadState.NotLoading && adapter.itemCount == 0
+                    showEmptyList(isEmptyList)
 
-                // Only show the list if refresh succeeds
-                binding.rvSearchIconsList.isVisible =
-                    loadStates.source.refresh is LoadState.NotLoading && !isEmptyList
+                    // Only show the list if refresh succeeds
+                    binding.rvSearchIconsList.isVisible =
+                        loadStates.source.refresh is LoadState.NotLoading && !isEmptyList
 
-                // show the retry button if the initial load or refresh fails and display the error message
-                binding.loadStateViewItem.btnRetry.isVisible =
-                    loadStates.source.refresh is LoadState.Error
-                binding.loadStateViewItem.tvErrorDescription.isVisible =
-                    loadStates.source.refresh is LoadState.Error
+                    // show the retry button if the initial load or refresh fails and display the error message
+                    binding.loadStateViewItem.btnRetry.isVisible =
+                        loadStates.source.refresh is LoadState.Error
+                    binding.loadStateViewItem.tvErrorDescription.isVisible =
+                        loadStates.source.refresh is LoadState.Error
 
-                /*val errorState = loadStates.source.append as? LoadState.Error
-                    ?: loadStates.source.prepend as? LoadState.Error
-                    ?: loadStates.source.append as? LoadState.Error
-                    ?: loadStates.source.prepend as? LoadState.Error
+                    /*val errorState = loadStates.source.append as? LoadState.Error
+                        ?: loadStates.source.prepend as? LoadState.Error
+                        ?: loadStates.source.append as? LoadState.Error
+                        ?: loadStates.source.prepend as? LoadState.Error
 
-                errorState?.let {
-                    binding.loadStateViewItem.tvErrorDescription.text = it.error.toString()
-                }*/
-
+                    errorState?.let {
+                        binding.loadStateViewItem.tvErrorDescription.text = it.error.toString()
+                    }*/
+                }
 
             }
         }

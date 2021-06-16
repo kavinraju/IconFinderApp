@@ -28,7 +28,7 @@
             android:fontFamily="@font/montserrat_bold"
             android:text="@{model.title}"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_30sp"
+            android:textSize="@dimen/dimen_28sp"
             app:layout_constraintEnd_toStartOf="@id/iv_details_premium_free"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

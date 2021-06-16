@@ -3,6 +3,7 @@ package com.srilasaka.iconfinderapp.network.services
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.srilasaka.iconfinderapp.network.models.IconDetails
 import com.srilasaka.iconfinderapp.network.models.IconSetDetails
 import com.srilasaka.iconfinderapp.network.models.IconSets
 import com.srilasaka.iconfinderapp.network.models.Icons
@@ -75,7 +76,7 @@ interface IconFinderAPIService {
 
     @Headers("Authorization: ${EndPoints.AuthorizationHeader}")
     @GET("iconsets/{iconset_id}")
-    fun getIconSetDetails(
+    fun getIconSetDetailsAsync(
         @Path("iconset_id") iconsetID: Int
     ): Deferred<IconSetDetails>
 
@@ -91,6 +92,12 @@ interface IconFinderAPIService {
         // "all" means include all icons no matter if they are premium icons or not and it's the default
         @Query("premium") premium: String = "all"
     ): Icons
+
+    @Headers("Authorization: ${EndPoints.AuthorizationHeader}")
+    @GET("icons/{icon_id}")
+    fun getIconDetailsAsync(
+        @Path("icon_id") iconID: Int
+    ): Deferred<IconDetails>
 
 
     companion object {

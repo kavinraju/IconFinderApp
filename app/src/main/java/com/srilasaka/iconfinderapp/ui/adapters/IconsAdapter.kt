@@ -77,8 +77,13 @@ class IconsAdapter(private val clickListener: IconsAdapterClickListener) :
     /**
      * Click Listener
      */
-    class IconsAdapterClickListener(val downloadClickListener: (downloadUrl: String, iconID: Int) -> Unit) {
+    class IconsAdapterClickListener(
+        val downloadClickListener: (downloadUrl: String, iconID: Int) -> Unit,
+        val iconItemClickListener: (iconID: Int) -> Unit
+    ) {
         fun onClickDownloadButton(downloadUrl: String, iconID: Int) =
             downloadClickListener(downloadUrl, iconID)
+
+        fun onClickIconItem(iconID: Int) = iconItemClickListener(iconID)
     }
 }

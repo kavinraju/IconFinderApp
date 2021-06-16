@@ -21,6 +21,7 @@
         android:layout_margin="@dimen/dimen_4dp"
         android:clickable="true"
         android:focusable="true"
+        android:onClick="@{() -> clickListener.onClickIconItem(model.icon_id)}"
         app:cardCornerRadius="@dimen/card_radius_icons_outer"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"

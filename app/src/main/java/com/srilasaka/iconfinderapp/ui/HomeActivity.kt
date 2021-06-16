@@ -35,7 +35,8 @@ class HomeActivity : AppCompatActivity() {
                         title = getString(R.string.home)
                     }
                 }
-                R.id.iconSetDetailsFragment -> {
+                R.id.iconSetDetailsFragment,
+                R.id.iconDetailsFragment -> {
                     binding.collapsingToolbarLayoutHomeScreen.apply {
                         title = ""
                     }

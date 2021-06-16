@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_homeFragment_to_iconSetDetailsFragment"
             app:destination="@id/iconSetDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_iconDetailsFragment"
+            app:destination="@id/iconDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/iconSetDetailsFragment"
@@ -25,5 +28,14 @@
         <argument
             android:name="price"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/iconDetailsFragment"
+        android:name="com.srilasaka.iconfinderapp.ui.icon_details.IconDetailsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_icon_details">
+        <argument
+            android:name="iconID"
+            app:argType="integer" />
     </fragment>
 </navigation>

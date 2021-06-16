@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
@@ -165,9 +166,16 @@ class IconSetDetailsFragment : Fragment() {
      * Helper method to initialize [IconsAdapter] and related objects
      */
     private fun initAdapter(baseDetailsModel: BasicDetailsModel) {
-        iconsAdapter = IconsAdapter(IconsAdapter.IconsAdapterClickListener { downloadUrl, iconId ->
-            downloadFile(context, downloadManager, downloadUrl, iconId.toString())
-        }
+        iconsAdapter = IconsAdapter(IconsAdapter.IconsAdapterClickListener(
+            downloadClickListener = { downloadUrl, iconId ->
+                downloadFile(context, downloadManager, downloadUrl, iconId.toString())
+            },
+            iconItemClickListener = { iconID ->
+                /*findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToIconDetailsFragment(iconID)
+                )*/
+            }
+        )
         )
 
         setBasicDetailsAdapter(baseDetailsModel)

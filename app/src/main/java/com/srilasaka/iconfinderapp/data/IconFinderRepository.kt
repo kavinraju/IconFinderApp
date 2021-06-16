@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.srilasaka.iconfinderapp.local_database.IconsFinderDatabase
+import com.srilasaka.iconfinderapp.local_database.icon_details_table.IconDetailsEntry
 import com.srilasaka.iconfinderapp.local_database.icon_set_details_table.IconSetDetailsEntry
 import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
 import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
@@ -81,7 +82,7 @@ class IconFinderRepository(
         emit(State.Loading())
 
         try {
-            val response = service.getIconSetDetails(iconsetID).await()
+            val response = service.getIconSetDetailsAsync(iconsetID).await()
             val iconSetDetailsEntry = response.mapAsIconSetDetailsEntry()
 
             emit(State.Success(iconSetDetailsEntry))
@@ -118,6 +119,29 @@ class IconFinderRepository(
             )
         }.flow
     }
+
+    /**
+     * getIconDetails() fetches the details of the Icon with @param iconID
+     */
+    fun getIconDetails(iconID: Int) = flow<State<IconDetailsEntry>> {
+        // Emit Loading state for indicating the loading process
+        emit(State.Loading())
+
+        try {
+            val response = service.getIconDetailsAsync(iconID).await()
+            val iconDetailsEntry = response.mapAsIconSetDetailsEntry()
+
+            emit(State.Success(iconDetailsEntry))
+        } catch (exception: IOException) {
+            Log.e(TAG, "exception = ${exception}")
+            emit(State.failed(exception.toString()))
+        } catch (exception: HttpException) {
+            Log.e(TAG, "exception = ${exception}")
+            emit(State.failed(exception.toString()))
+        }
+
+
+    }.flowOn(Dispatchers.IO)
 
     companion object {
         const val NUMBER_OF_ITEMS_TO_FETCH = 20

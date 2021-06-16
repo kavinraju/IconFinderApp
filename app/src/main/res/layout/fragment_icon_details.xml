@@ -7,121 +7,97 @@
 
         <!-- TODO: Need to change this model type-->
         <variable
-            name="model"
-            type="com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry" />
+            name="viewModel"
+            type="com.srilasaka.iconfinderapp.ui.icon_details.IconDetailsFragmentViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".ui.HomeActivity">
+        tools:context=".ui.icon_details.IconDetailsFragment">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/Theme.IconFinderApp.AppBarOverlay">
-
-            <com.google.android.material.appbar.AppBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/Theme.IconFinderApp.AppBarOverlay"
-                app:liftOnScroll="true">
-
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/toolbarBackgroundColor"
-                    android:elevation="@dimen/dimen_4dp"
-                    android:theme="@style/DetailsMaterialToolBarTheme"
-                    app:popupTheme="@style/Theme.IconFinderApp.PopupOverlay"
-                    app:titleTextAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-            </com.google.android.material.appbar.AppBarLayout>
-
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-
-        <androidx.core.widget.NestedScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".ui.iconset_details.IconDetailsFragment">
+            android:paddingBottom="@dimen/dimen_16dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <include
+                android:id="@+id/load_state_view_item"
+                layout="@layout/load_state_view_item"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_icon_download" />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/material_card_view_icon_details"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/material_card_view_icon_details"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0dp"
+                android:layout_margin="@dimen/dimen_16dp"
+                android:paddingStart="@dimen/dimen_16dp"
+                android:paddingEnd="@dimen/dimen_16dp"
+                app:cardBackgroundColor="@color/card_bg_color"
+                app:cardCornerRadius="@dimen/card_radius_icons_outer"
+                app:cardElevation="@dimen/dimen_0dp"
+                app:layout_constraintBottom_toBottomOf="@id/guideline_vertical_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_icons_icon"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_0dp"
-                    android:layout_margin="@dimen/dimen_16dp"
-                    android:paddingStart="@dimen/dimen_16dp"
-                    android:paddingEnd="@dimen/dimen_16dp"
-                    app:cardBackgroundColor="@color/card_bg_color"
-                    app:cardCornerRadius="@dimen/card_radius_icons_outer"
-                    app:layout_constraintBottom_toBottomOf="@id/guideline_vertical_1"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/dimen_32dp"
+                    android:contentDescription="@string/icon"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:loadImageUsingGlide="@{viewModel.iconDetails.format_64_download_url}"
+                    app:srcCompat="@drawable/icon_download" />
 
-                    <ImageView
-                        android:id="@+id/iv_icons_icon"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_margin="@dimen/dimen_32dp"
-                        android:contentDescription="@string/icon"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+            </com.google.android.material.card.MaterialCardView>
 
-                        app:srcCompat="@drawable/icon_download" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_icon_download"
+                style="@style/Widget.App.Button.UnelevatedButton.IconDetailsScreen"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_32dp"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:layout_marginEnd="@dimen/dimen_32dp"
+                android:text="@string/download"
+                app:icon="@drawable/icon_download"
+                app:layout_constraintEnd_toEndOf="@id/material_card_view_icon_details"
+                app:layout_constraintStart_toStartOf="@id/material_card_view_icon_details"
+                app:layout_constraintTop_toBottomOf="@id/material_card_view_icon_details" />
 
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_icon_download"
-                    style="@style/Widget.App.Button.UnelevatedButton.IconDetailsScreen"
-                    android:layout_width="@dimen/dimen_0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_32dp"
-                    android:layout_marginTop="@dimen/dimen_16dp"
-                    android:layout_marginEnd="@dimen/dimen_32dp"
-
-                    android:text="@string/download"
-                    app:icon="@drawable/icon_download"
-                    app:layout_constraintEnd_toEndOf="@id/material_card_view_icon_details"
-                    app:layout_constraintStart_toStartOf="@id/material_card_view_icon_details"
-                    app:layout_constraintTop_toBottomOf="@id/material_card_view_icon_details" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_vertical_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="300dp" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="300dp" />
 
 
-                <include
-                    android:id="@+id/layout_basic_details"
-                    layout="@layout/layout_basic_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_icon_download" />
+            <include
+                android:id="@+id/layout_basic_details"
+                layout="@layout/layout_basic_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_icon_download"
+                app:model="@{viewModel.basicDetailsModel}" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
-    <!--
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout><!--
     Just for reference, should be removed this after using
-    app:loadImageUsingGlide="@{model.format_64_preview_url}"
-     android:onClick="@{()->clickListener.onClickDownloadButton(model.format_64_download_url, model.icon_id)}"
+
+
      -->

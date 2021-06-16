@@ -61,3 +61,34 @@ fun List<Iconset>.mapAsIconSetsEntry(): List<IconSetsEntry> {
         )
     }
 }
+
+/** mapAsIconSetsEntry() is a helper function to convert the [IconSets] object [IconSetsEntry] */
+fun Iconset.mapAsIconSetsEntry(): IconSetsEntry {
+    val currencySymbol =
+        if (this.prices != null) Currency.getInstance(this.prices[0].currency).symbol else null
+    val firstPrice =
+        if (currencySymbol != null) "${this.prices?.get(0)?.price} ${currencySymbol}" else "N/A"
+
+    return IconSetsEntry(
+        this.are_all_icons_glyph,
+        this.author?.author_id,
+        this.author?.user_id,
+        this.author?.iconsets_count ?: 0,
+        this.author?.name,
+        this.author?.website_url ?: "",
+        this.icons_count,
+        this.iconset_id,
+        this.identifier,
+        this.is_premium,
+        firstPrice,
+        (this.license?.license_id ?: "N/A").toString(),
+        this.license?.name ?: "N/A",
+        this.license?.scope ?: "N/A",
+        this.license?.url ?: "N/A",
+        this.name,
+        this.published_at,
+        this.readme,
+        this.type,
+        this.website_url
+    )
+}
