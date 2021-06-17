@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple">#8C88F8</color>
+    <color name="white_grey">#E1E1E1</color>
+
+    <color name="button_color">@color/purple</color>
+    <color name="text_color">#A8ADBC</color>
+    <color name="text_color_purple">@color/purple</color>
+    <color name="search_bg_color">#5B5D5B</color>
+    <color name="card_bg_color">#505050</color>
+    <color name="image_bg_color">#00000012</color>
+    <color name="toolbarBackgroundColor">@color/black</color>
+    <color name="ripple_color_grey">#59BFBFBF</color>
+    <color name="ripple_color_purple">#BAA4D8</color>
+    <color name="tab_layout_bg_color">@color/black</color>
+    <color name="toolbarTitleColor">@color/white_2</color>
+    <color name="text_title_color">@color/white_grey</color>
+    <color name="status_bar_color">@color/black</color>
+</resources>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.srilasaka.iconfinderapp.local_database.author_details_table.AuthorEntry" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_layout_basic_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_16dp">
+
+        <TextView
+            android:id="@+id/tv_author_name"
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_32dp"
+            android:layout_marginEnd="@dimen/dimen_16dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@{model.name}"
+            android:textColor="@color/text_title_color"
+            android:textSize="@dimen/dimen_28sp"
+            app:layout_constraintEnd_toStartOf="@id/iv_iv_author_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/sample_string_james_wan" />
+
+        <ImageView
+            android:id="@+id/iv_iv_author_image"
+            android:layout_width="@dimen/dimen_62dp"
+            android:layout_height="@dimen/dimen_62dp"
+            android:layout_marginEnd="@dimen/dimen_32dp"
+            android:elevation="@dimen/dimen_2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:loadImageUsingGlide="@{model.website_url}"
+            app:srcCompat="@drawable/icon_profile_pic" />
+
+        <TextView
+            android:id="@+id/tv_website_url_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_16dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/url"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/dimen_14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tv_author_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_author_name" />
+
+        <TextView
+            android:id="@+id/tv_website_url"
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_8dp"
+            android:layout_marginTop="@dimen/dimen_8dp"
+            android:autoLink="all"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@{model.website_url}"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/purple"
+            android:textSize="@dimen/dimen_14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_website_url_title"
+            app:layout_constraintEnd_toEndOf="@id/iv_iv_author_image"
+            app:layout_constraintStart_toEndOf="@id/tv_website_url_title"
+            app:makeAsHyperLink="@{model.website_url}"
+            tools:text="@string/sample_string_website_url" />
+
+        <TextView
+            android:id="@+id/tv_license_type_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/license_type"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/dimen_14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tv_author_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_website_url_title" />
+
+        <TextView
+            android:id="@+id/tv_license_type"
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_4dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@{model.licenseType}"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/dimen_14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_license_type_title"
+            app:layout_constraintEnd_toEndOf="@id/iv_iv_author_image"
+            app:layout_constraintStart_toEndOf="@id/tv_license_type_title"
+            tools:text="@string/sample_string_creative_commons_license" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

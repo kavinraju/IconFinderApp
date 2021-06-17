@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry" />
+
+        <variable
+            name="clickListener"
+            type="com.srilasaka.iconfinderapp.ui.adapters.IconSetAdapter.IconSetAdapterClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_icon_set_premium_free"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/this_is_the_subscription_type_premium_or_free"
+            android:elevation="@dimen/dimen_2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:loadSubscriptionTypeIcon="@{model.is_premium()}"
+            app:srcCompat="@drawable/icon_premium" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/material_card_view_icon_set"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> clickListener.onClickIconSetItem(model.iconset_id, model.price)}"
+            app:cardBackgroundColor="@color/card_bg_color"
+            app:cardCornerRadius="@dimen/card_radius_icon_set"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@color/card_bg_color">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dimen_20dp">
+
+                <TextView
+                    android:id="@+id/tv_icon_set_name"
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dimen_16dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@{model.name}"
+                    android:textColor="@color/text_title_color"
+                    android:textSize="@dimen/dimen_18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/tv_icon_set_price"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/sample_string_foods" />
+
+                <TextView
+                    android:id="@+id/tv_icon_set_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@{model.price}"
+                    android:textColor="@color/purple"
+                    android:textSize="@dimen/dimen_18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/sample_string_price_20" />
+
+                <TextView
+                    android:id="@+id/tv_icon_set_type_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_4dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/type"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/dimen_16sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_icon_set_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_icon_set_name" />
+
+                <TextView
+                    android:id="@+id/tv_icon_set_type"
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_4dp"
+                    android:layout_marginEnd="@dimen/dimen_16dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@{model.type}"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/dimen_16sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_icon_set_type_title"
+                    app:layout_constraintStart_toEndOf="@id/tv_icon_set_type_title"
+                    tools:text="@string/sample_string_fill" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/image_button_info"
+                    android:layout_width="@dimen/dimen_13dp"
+                    android:layout_height="@dimen/dimen_13dp"
+                    android:layout_marginStart="@dimen/dimen_4dp"
+                    android:src="@drawable/icon_info"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_icon_set_type_title"
+                    app:layout_constraintStart_toEndOf="@id/tv_icon_set_type"
+                    app:layout_constraintTop_toTopOf="@id/tv_icon_set_type_title" />
+
+                <TextView
+                    android:id="@+id/tv_icon_set_creator_name"
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_4dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@{model.author_name}"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/dimen_16sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_icon_set_type_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guideline_vertical_1"
+                    app:layout_constraintTop_toBottomOf="@id/tv_icon_set_price"
+                    tools:text="@string/sample_string_james_wan" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="171dp" />
+
+                <TextView
+                    android:id="@+id/tv_icon_set_license_type_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_4dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/license_type"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/dimen_14sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_icon_set_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_icon_set_creator_name" />
+
+                <TextView
+                    android:id="@+id/tv_icon_set_license_type"
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_4dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@{model.license_name}"
+                    android:textColor="@color/purple"
+                    android:textSize="@dimen/dimen_14sp"
+
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_icon_set_license_type_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_icon_set_license_type_title"
+                    tools:text="@string/sample_string_creative_commons_license" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,34 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="dimen_0dp">0dp</dimen>
+
+    <dimen name="tab_indicator_radius">1dp</dimen>
+    <dimen name="tab_indicator_height">2dp</dimen>
+    <dimen name="tab_layout_elevation">4dp</dimen>
+    <dimen name="dimen_4dp">4dp</dimen>
+    <dimen name="dimen_16sp">16sp</dimen>
+    <dimen name="dimen_14sp">14sp</dimen>
+    <dimen name="dimen_16dp">16dp</dimen>
+    <dimen name="dimen_13dp">13dp</dimen>
+    <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="dimen_2dp">2dp</dimen>
+    <dimen name="dimen_20dp">20dp</dimen>
+    <dimen name="card_radius_icons_outer">20dp</dimen>
+    <dimen name="card_radius_icons_inner">8dp</dimen>
+    <dimen name="dimen_56dp">56dp</dimen>
+    <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_20sp">20sp</dimen>
+    <dimen name="card_width_material_card_view_icons_inner">123dp</dimen>
+    <dimen name="card_height_material_card_view_icons_inner">74dp</dimen>
+
+    <dimen name="dimen_24sp">24sp</dimen>
+    <dimen name="dimen_30sp">30sp</dimen>
+    <dimen name="card_radius_icon_set">25dp</dimen>
+    <dimen name="dimen_32sp">32sp</dimen>
+    <dimen name="dimen_1dp">1dp</dimen>
+    <dimen name="dimen_18sp">18sp</dimen>
+    <dimen name="dimen_62dp">62dp</dimen>
+    <dimen name="dimen_32dp">32dp</dimen>
+    <dimen name="dimen_28sp">28sp</dimen>
+    <dimen name="dimen_12sp">12sp</dimen>
+</resources>
