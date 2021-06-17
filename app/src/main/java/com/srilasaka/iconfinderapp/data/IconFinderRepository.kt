@@ -5,10 +5,12 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.srilasaka.iconfinderapp.local_database.IconsFinderDatabase
+import com.srilasaka.iconfinderapp.local_database.author_details_table.AuthorEntry
 import com.srilasaka.iconfinderapp.local_database.icon_details_table.IconDetailsEntry
 import com.srilasaka.iconfinderapp.local_database.icon_set_details_table.IconSetDetailsEntry
 import com.srilasaka.iconfinderapp.local_database.icon_set_table.IconSetsEntry
 import com.srilasaka.iconfinderapp.local_database.icons_table.IconsEntry
+import com.srilasaka.iconfinderapp.network.models.mapAsAuthorEntry
 import com.srilasaka.iconfinderapp.network.models.mapAsIconSetDetailsEntry
 import com.srilasaka.iconfinderapp.network.services.IconFinderAPIService
 import com.srilasaka.iconfinderapp.network.utils.State
@@ -142,6 +144,51 @@ class IconFinderRepository(
 
 
     }.flowOn(Dispatchers.IO)
+
+    /**
+     * getAuthorDetails() fetches the details of the author with @param authorID
+     */
+    fun getAuthorDetails(authorID: Int) = flow<State<AuthorEntry>> {
+        // Emit Loading state for indicating the loading process
+        emit(State.Loading())
+
+        try {
+            val response = service.getAuthorDetailsAsync(authorID).await()
+            val authorEntry = response.mapAsAuthorEntry()
+
+            emit(State.Success(authorEntry))
+        } catch (exception: IOException) {
+            Log.e(TAG, "exception = ${exception}")
+            emit(State.failed(exception.toString()))
+        } catch (exception: HttpException) {
+            Log.e(TAG, "exception = ${exception.code()}")
+            emit(State.failed(exception.toString()))
+        }
+
+    }.flowOn(Dispatchers.IO)
+
+    /**
+     * getIconSetsOfAuthor() fetches the IconSets belonging to the Author with ID @param authorID.
+     *
+     * @param authorID - ID of the Author
+     * @param premium - the premium preference set by the user
+     */
+    fun getIconSetsOfAuthor(authorID: Int, premium: PREMIUM): Flow<PagingData<IconSetsEntry>> {
+        Log.d(TAG, "New IconSet Icons query")
+
+        //val pagingSourceFactory = { database.iconSetsDao.getIconSets() }
+
+        return Pager(
+            PagingConfig(pageSize = NUMBER_OF_ITEMS_TO_FETCH, enablePlaceholders = false)
+        ) {
+            IconSetsOfAuthorPagingSource(
+                authorID = authorID,
+                premium = premium,
+                database = database,
+                networkService = service
+            )
+        }.flow
+    }
 
     companion object {
         const val NUMBER_OF_ITEMS_TO_FETCH = 20

@@ -1,13 +1,5 @@
 package com.srilasaka.iconfinderapp.network.models
 
-data class Author(
-    val author_id: Int?,
-    val user_id: Int?,
-    val iconsets_count: Int?,
-    val name: String,
-    val website_url: String?
-)
-
 data class AuthorDetails(
     val company: String?,
     val iconsets_count: Int?,

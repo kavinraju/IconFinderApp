@@ -3,10 +3,7 @@ package com.srilasaka.iconfinderapp.network.services
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.srilasaka.iconfinderapp.network.models.IconDetails
-import com.srilasaka.iconfinderapp.network.models.IconSetDetails
-import com.srilasaka.iconfinderapp.network.models.IconSets
-import com.srilasaka.iconfinderapp.network.models.Icons
+import com.srilasaka.iconfinderapp.network.models.*
 import com.srilasaka.iconfinderapp.network.utils.EndPoints
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
@@ -99,6 +96,24 @@ interface IconFinderAPIService {
         @Path("icon_id") iconID: Int
     ): Deferred<IconDetails>
 
+    @Headers("Authorization: ${EndPoints.AuthorizationHeader}")
+    @GET("authors/{author_id}")
+    fun getAuthorDetailsAsync(
+        @Path("author_id") authorID: Int
+    ): Deferred<Author>
+
+    @Headers("Authorization: ${EndPoints.AuthorizationHeader}")
+    @GET("authors/{author_id}/iconsets")
+    suspend fun getIconSetsOfAuthor(
+        @Path("author_id") authorID: Int,
+        // Setting the default count to 20
+        @Query("count") count: Int = 20,
+        // "after" query parameter is optional - if no need to use this, just pass null
+        @Query("after") after: Int?,
+        // premium - "false" or "0" means not-premium, "true" or "1" means premium,
+        // "all" means include all icons no matter if they are premium icons or not and it's the default
+        @Query("premium") premium: String = "all"
+    ): IconSets
 
     companion object {
         fun create(): IconFinderAPIService = IconFinderAPI.retrofitService

@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.srilasaka.iconfinderapp.databinding.FragmentIconDetailsBinding
 import com.srilasaka.iconfinderapp.network.utils.State
+import com.srilasaka.iconfinderapp.ui.adapters.BasicDetailsAdapter
 import com.srilasaka.iconfinderapp.utils.downloadFile
 
 /**
@@ -107,6 +109,19 @@ class IconDetailsFragment : Fragment() {
             )
         }
 
+        // Set the clickListener to the R.layout.layout_basic_details
+        val clickListener = BasicDetailsAdapter.BasicDetailsAdapterClickListener(
+            onClickCreatorNameListener = { authorID: Int, licenseType: String ->
+                val authorID = viewModel.iconDetails.value?.iconset?.author_id
+                    ?: viewModel.iconDetails.value?.iconset?.user_id ?: 0
+                findNavController().navigate(
+                    IconDetailsFragmentDirections.actionIconDetailsFragmentToAuthorDetailsFragment(
+                        authorID,
+                        viewModel.iconDetails.value?.iconset?.license_name ?: "N/A"
+                    )
+                )
+            })
+        binding.layoutBasicDetails.clickListener = clickListener
     }
 
     /**

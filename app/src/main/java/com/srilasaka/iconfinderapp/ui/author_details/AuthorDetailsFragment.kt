@@ -1,7 +1,5 @@
-package com.srilasaka.iconfinderapp.ui.iconset_details
+package com.srilasaka.iconfinderapp.ui.author_details
 
-import android.app.DownloadManager
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,21 +10,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.srilasaka.iconfinderapp.R
-import com.srilasaka.iconfinderapp.databinding.FragmentIconSetDetailsBinding
+import com.srilasaka.iconfinderapp.databinding.FragmentAuthorDetailsBinding
+import com.srilasaka.iconfinderapp.local_database.author_details_table.AuthorEntry
 import com.srilasaka.iconfinderapp.network.utils.State
-import com.srilasaka.iconfinderapp.ui.adapters.BasicDetailsAdapter
-import com.srilasaka.iconfinderapp.ui.adapters.IconsAdapter
-import com.srilasaka.iconfinderapp.ui.adapters.LoadStateAdapter
-import com.srilasaka.iconfinderapp.ui.models.BasicDetailsModel
+import com.srilasaka.iconfinderapp.ui.adapters.*
 import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
 import com.srilasaka.iconfinderapp.ui.utils.UiModel
-import com.srilasaka.iconfinderapp.utils.downloadFile
 import com.srilasaka.iconfinderapp.utils.getPremium
 import com.srilasaka.iconfinderapp.utils.screenOrientationIsPortrait
 import kotlinx.coroutines.Job
@@ -34,34 +29,31 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 /**
- * [Fragment] to display the details od the IconSet from [IconSetFragment].
+ * [Fragment] to display the details of Creator from [IconSetFragment] or [IconsFragment].
  */
-class IconSetDetailsFragment : Fragment() {
+class AuthorDetailsFragment : Fragment() {
 
-    private val TAG: String = IconSetDetailsFragment::class.java.simpleName
+    private val TAG: String = AuthorDetailsFragment::class.java.simpleName
 
-    private var _binding: FragmentIconSetDetailsBinding? = null
+    private var _binding: FragmentAuthorDetailsBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var args: IconSetDetailsFragmentArgs
-    private lateinit var iconsAdapter: IconsAdapter
-    private lateinit var basicDetailsAdapter: BasicDetailsAdapter
+    private lateinit var args: AuthorDetailsFragmentArgs
+    private lateinit var iconSetAdapter: IconSetAdapter
+    private lateinit var authorDetailsAdapter: AuthorDetailsAdapter
     private var job: Job? = null
-    private val downloadManager: DownloadManager by lazy {
-        context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-    }
 
-    private val viewModel: IconSetDetailsFragmentViewModel by lazy {
+    private val viewModel: AuthorDetailsFragmentViewModel by lazy {
         val application = requireNotNull(this.activity).application
-        val factory = IconSetDetailsFragmentViewModel.Factory(
+        val factory = AuthorDetailsFragmentViewModel.Factory(
             application,
-            args.iconSetID,
-            args.price
+            args.authorID,
+            args.licenseType
         )
-        ViewModelProvider(this, factory).get(IconSetDetailsFragmentViewModel::class.java)
+        ViewModelProvider(this, factory).get(AuthorDetailsFragmentViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -70,10 +62,10 @@ class IconSetDetailsFragment : Fragment() {
     ): View? {
 
         // Get the arguments through safe args
-        args = IconSetDetailsFragmentArgs.fromBundle(requireArguments())
+        args = AuthorDetailsFragmentArgs.fromBundle(requireArguments())
 
         // Get a reference to the binding object
-        _binding = FragmentIconSetDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentAuthorDetailsBinding.inflate(inflater, container, false)
 
         setUIComponents()
         return binding.root
@@ -97,14 +89,18 @@ class IconSetDetailsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         // Set the basic IconSet Details fetched
-        viewModel.iconSetDetailsFlow.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.authorEntryFlow.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is State.Loading -> {
                     showStatusLoading()
                 }
                 is State.Success -> {
                     showStatusSuccess()
-                    viewModel.setIconSetDetails(state.data)
+                    // detail value is returned from API if there's no data
+                    if (state.data.detail == null)
+                        viewModel.setAuthorDetails(state.data)
+                    else
+                        showEmptyList(true)
                 }
                 is State.Failed -> {
                     showStatusFailed()
@@ -113,14 +109,11 @@ class IconSetDetailsFragment : Fragment() {
 
         })
 
-        viewModel.basicDetailsModel.observe(viewLifecycleOwner, { baseDetailsModel ->
-            // Set the RecyclerView iconsAdapter for IconSet Icons fetched.
-            // Initialize here as we need baseDetailsModel data for the adapter
-            initAdapter(baseDetailsModel)
+        viewModel.authorEntry.observe(viewLifecycleOwner, Observer { authorEntry ->
+            initAdapter(authorEntry)
         })
-
-        // Refresh the iconsAdapter when button retry is clicked.
-        binding.loadStateViewItem.btnRetry.setOnClickListener { iconsAdapter.refresh() }
+        // Refresh the iconSetAdapter when button retry is clicked.
+        binding.loadStateViewItem.btnRetry.setOnClickListener { if (this::iconSetAdapter.isInitialized) iconSetAdapter.refresh() }
     }
 
     /**
@@ -163,67 +156,67 @@ class IconSetDetailsFragment : Fragment() {
     }
 
     /**
-     * Helper method to initialize [IconsAdapter] and related objects
+     * Helper method to initialize [IconSetAdapter] and related objects
      */
-    private fun initAdapter(baseDetailsModel: BasicDetailsModel) {
-        iconsAdapter = IconsAdapter(IconsAdapter.IconsAdapterClickListener(
-            downloadClickListener = { downloadUrl, iconId ->
-                downloadFile(context, downloadManager, downloadUrl, iconId.toString())
-            },
-            iconItemClickListener = { iconID ->
-                findNavController().navigate(
-                    IconSetDetailsFragmentDirections.actionIconSetDetailsFragmentToIconDetailsFragment(
-                        iconID
+    private fun initAdapter(authorEntry: AuthorEntry) {
+        iconSetAdapter =
+            IconSetAdapter(IconSetAdapter.IconSetAdapterClickListener { iconSetID: Int, price: String ->
+                /*findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToIconSetDetailsFragment(
+                        iconSetID,
+                        price
                     )
-                )
-            }
-        )
-        )
+                )*/
+            })
 
-        setBasicDetailsAdapter(baseDetailsModel)
+        setAuthorDetailsAdapter(authorEntry)
 
+        // Logic for screen item layout manager
+        // Get the screen orientation and set the layoutManager of binding.rvIconSetList accordingly.
+        // Use LinearLayoutManager for Portrait mode.
+        // Use GridLayoutManager for Landscape mode.
         val screenOrientationIsPortrait = screenOrientationIsPortrait(requireContext())
-        val gridLayoutManager = GridLayoutManager(
+        val layoutManager = if (screenOrientationIsPortrait) LinearLayoutManager(
             context,
-            if (screenOrientationIsPortrait) 2 else 4
+            LinearLayoutManager.VERTICAL,
+            false
         )
-        gridLayoutManager.apply {
-            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    // Logic to make the BasicDetailsAdapter at 0th position and IconSetLoadSetAdapter
-                    // at Footer of the IconsAdapter, span across entire screen.
-                    // About checks we make
-                    // position == 0 because we want the R.layout.load_state_view_item at the last position
-                    // position == iconsAdapter.itemCount + 1 because we want the R.layout.layout_basic_details at the first position
-                    return if ((position == 0 && basicDetailsAdapter.getItemViewType(position) == R.layout.layout_basic_details)
-                        || (iconsAdapter.getItemViewType(position) == R.layout.load_state_view_item && position == iconsAdapter.itemCount + 1)
-                    )
-                        if (screenOrientationIsPortrait) 2 else 4
-                    else 1
-                }
+        else {
+            GridLayoutManager(context, 2).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        // Logic to make the LoadStateAdapter at Footer of the IconSetAdapter span across
+                        // entire screen
+                        return if ((position == 0 && authorDetailsAdapter.getItemViewType(position) == R.layout.layout_author_details)
+                            || iconSetAdapter.getItemViewType(position) == R.layout.load_state_view_item && position == iconSetAdapter.itemCount + 1
+                        )
+                            if (screenOrientationIsPortrait) 1 else 2
+                        else 1
+                    }
 
+                }
             }
         }
 
-        binding.rvIconsetIconsList.layoutManager = gridLayoutManager
+        binding.rvIconsetOfAuthorList.layoutManager = layoutManager
 
-        val concatAdapter = ConcatAdapter(basicDetailsAdapter, iconsAdapter.withLoadStateFooter(
-            //header = IconSetLoadSetAdapter { iconsAdapter.retry() },
-            footer = LoadStateAdapter { iconsAdapter.retry() }
+        val concatAdapter = ConcatAdapter(authorDetailsAdapter, iconSetAdapter.withLoadStateFooter(
+            //header = IconSetLoadSetAdapter { iconSetAdapter.retry() },
+            footer = LoadStateAdapter { iconSetAdapter.retry() }
         ))
-        binding.rvIconsetIconsList.adapter = concatAdapter
+        binding.rvIconsetOfAuthorList.adapter = concatAdapter
 
         lifecycleScope.launchWhenCreated {
 
-            iconsAdapter.loadStateFlow.collectLatest { loadStates ->
+            iconSetAdapter.loadStateFlow.collectLatest { loadStates ->
 
                 // Show list is empty
                 val isEmptyList =
-                    loadStates.source.refresh is LoadState.NotLoading && iconsAdapter.itemCount == 0
+                    loadStates.source.refresh is LoadState.NotLoading && iconSetAdapter.itemCount == 0
                 showEmptyList(isEmptyList)
 
                 // Only show the list if refresh succeeds
-                binding.rvIconsetIconsList.isVisible =
+                binding.rvIconsetOfAuthorList.isVisible =
                     loadStates.source.refresh is LoadState.NotLoading && !isEmptyList
 
                 // show the retry button if the initial load or refresh fails and display the error message
@@ -246,49 +239,40 @@ class IconSetDetailsFragment : Fragment() {
 
         }
 
-        fetchIconSetIcons(viewModel.getIconSetID())
+        // Fetch the Author's Iconsets
+        fetchIconSetOfAuthor(viewModel.getAuthorID())
     }
 
     /**
-     * Helper function to set the [BasicDetailsAdapter]
+     * Helper function to set the [AuthorDetailsAdapter]
      */
-    private fun setBasicDetailsAdapter(baseDetailsModel: BasicDetailsModel) {
-        basicDetailsAdapter = BasicDetailsAdapter(
-            BasicDetailsAdapter.BasicDetailsAdapterClickListener(onClickCreatorNameListener = { authorID: Int, licenseType: String ->
-                findNavController().navigate(
-                    IconSetDetailsFragmentDirections.actionIconSetDetailsFragmentToAuthorDetailsFragment(
-                        authorID,
-                        licenseType
-                    )
-                )
-            })
-        )
+    private fun setAuthorDetailsAdapter(authorEntry: AuthorEntry) {
+        authorDetailsAdapter = AuthorDetailsAdapter()
 
-        // set the @param baseDetailsModel to the basicDetailsAdapter
+        // set the @param authorEntry to the authorDetailsAdapter
         lifecycleScope.launch {
-            basicDetailsAdapter.submitList(listOf(UiModel.BasicDetailsDataItem(baseDetailsModel)))
+            authorDetailsAdapter.submitList(listOf(UiModel.AuthorDataItem(authorEntry)))
         }
     }
 
     /**
-     * Helper method to call the [IconSetDetailsFragmentViewModel.fetchIconSetIcons] method from [IconSetDetailsFragmentViewModel]
-     * @param iconsetID - iconsetID is passed through Safe Args
+     * Helper method to call the [AuthorDetailsFragmentViewModel.fetchIconSetOfAuthor] method from [AuthorDetailsFragmentViewModel]
+     * @param authorID - authorID is passed through Safe Args
      * @param premium - default value is retrieved from the function [getPremium]
      *
      * [getPremium] function requires
      * @param [Context], @param [FILTER_SCREEN]
      */
-    private fun fetchIconSetIcons(
-        iconsetID: Int,
+    private fun fetchIconSetOfAuthor(
+        authorID: Int,
         premium: PREMIUM = getPremium(requireContext(), FILTER_SCREEN.ICON_SET)
     ) {
-        Log.d(TAG, "fetchIconSetIcons")
+        Log.d(TAG, "fetchIconSetOfAuthor")
         // Use viewModel object to collect the data
         job?.cancel()
         job = lifecycleScope.launch {
-            Log.d(TAG, "lifecycleScope.launch")
-            viewModel.fetchIconSetIcons(iconsetID, premium).collectLatest {
-                iconsAdapter.submitData(it)
+            viewModel.fetchIconSetOfAuthor(authorID, premium).collectLatest {
+                iconSetAdapter.submitData(it)
             }
         }
     }
@@ -299,10 +283,10 @@ class IconSetDetailsFragment : Fragment() {
     private fun showEmptyList(show: Boolean) {
         if (show) {
             binding.noDataViewItem.clNoDataLayout.visibility = View.VISIBLE
-            binding.rvIconsetIconsList.visibility = View.GONE
+            binding.rvIconsetOfAuthorList.visibility = View.GONE
         } else {
             binding.noDataViewItem.clNoDataLayout.visibility = View.GONE
-            binding.rvIconsetIconsList.visibility = View.VISIBLE
+            binding.rvIconsetOfAuthorList.visibility = View.VISIBLE
         }
     }
 }
