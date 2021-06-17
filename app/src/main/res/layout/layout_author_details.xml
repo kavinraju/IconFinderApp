@@ -41,7 +41,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:loadImageUsingGlide="@{model.website_url}"
-            app:srcCompat="@drawable/icon_premium" />
+            app:srcCompat="@drawable/icon_profile_pic" />
 
         <TextView
             android:id="@+id/tv_website_url_title"
