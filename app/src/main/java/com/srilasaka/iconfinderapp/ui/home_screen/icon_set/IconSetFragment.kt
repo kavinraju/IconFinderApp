@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconSetBinding
 import com.srilasaka.iconfinderapp.ui.adapters.IconSetAdapter
@@ -34,7 +35,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class IconSetFragment : Fragment() {
+class
+IconSetFragment : Fragment() {
 
     private val TAG: String = IconSetFragment::class.java.simpleName
 
@@ -76,11 +78,15 @@ class IconSetFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         setUpFilterViewClickListener()
+        // Make SearchView of Type [EditText] not editable
+        searchView.inputType = 0x00000000
     }
 
     override fun onPause() {
         super.onPause()
         filterView.setOnClickListener(null)
+        // Make SearchView of Type [EditText] editable
+        searchView.inputType = 0x00000001
     }
 
     override fun onDestroyView() {
@@ -106,6 +112,15 @@ class IconSetFragment : Fragment() {
         initSwipeToRefresh()
         // Refresh the adapter when button retry is clicked.
         binding.loadStateViewItem.btnRetry.setOnClickListener { adapter.refresh() }
+
+        searchView.setOnClickListener {
+            Snackbar.make(
+                binding.root,
+                getString(R.string.search_option_not_available_now),
+                Snackbar.LENGTH_LONG
+            )
+                .setAction("Action", null).show()
+        }
     }
 
     /**
