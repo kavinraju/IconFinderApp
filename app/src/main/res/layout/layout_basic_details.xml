@@ -104,7 +104,7 @@
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/montserrat_medium"
-            android:onClick="@{()->clickListener.onClickCreatorName(model.authorID, model.licenseName)}"
+            android:onClick="@{()->clickListener.onClickCreatorName(model.authorID, model.userID, model.licenseName)}"
             android:text="@{model.creatorName}"
             android:textColor="@color/text_color_purple"
             android:textSize="@dimen/dimen_24sp"

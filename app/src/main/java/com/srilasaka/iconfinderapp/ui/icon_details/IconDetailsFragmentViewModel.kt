@@ -71,7 +71,8 @@ class IconDetailsFragmentViewModel(application: Application, iconID: Int) :
         Log.d(TAG, "setIconSetDetails: iconSetDetailsEntry $iconDetailsEntry")
         _iconDetails.value = iconDetailsEntry
         _basicDetailsModel.value = BasicDetailsModel(
-            iconDetailsEntry.iconset?.author_id ?: -1,
+            iconDetailsEntry.iconset?.author_id,
+            iconDetailsEntry.iconset?.user_id,
             iconDetailsEntry.iconset?.author_name ?: "N/A",
             iconDetailsEntry.is_premium!!,
             iconDetailsEntry.iconset?.readme ?: "N/A",

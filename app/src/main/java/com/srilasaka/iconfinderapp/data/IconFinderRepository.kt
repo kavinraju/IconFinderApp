@@ -162,7 +162,10 @@ class IconFinderRepository(
             emit(State.failed(exception.toString()))
         } catch (exception: HttpException) {
             Log.e(TAG, "exception = ${exception.code()}")
-            emit(State.failed(exception.toString()))
+            if (exception.code() == 404)
+                emit(State.noData(exception.code()))
+            else
+                emit(State.failed(exception.toString()))
         }
 
     }.flowOn(Dispatchers.IO)

@@ -97,13 +97,13 @@ class AuthorDetailsFragment : Fragment() {
                 is State.Success -> {
                     showStatusSuccess()
                     // detail value is returned from API if there's no data
-                    if (state.data.detail == null)
-                        viewModel.setAuthorDetails(state.data)
-                    else
-                        showEmptyList(true)
+                    viewModel.setAuthorDetails(state.data)
                 }
                 is State.Failed -> {
                     showStatusFailed()
+                }
+                is State.NoData -> {
+                    showEmptyList(true)
                 }
             }
 
@@ -284,6 +284,7 @@ class AuthorDetailsFragment : Fragment() {
         if (show) {
             binding.noDataViewItem.clNoDataLayout.visibility = View.VISIBLE
             binding.rvIconsetOfAuthorList.visibility = View.GONE
+            binding.loadStateViewItem.progressBar.visibility = View.GONE
         } else {
             binding.noDataViewItem.clNoDataLayout.visibility = View.GONE
             binding.rvIconsetOfAuthorList.visibility = View.VISIBLE

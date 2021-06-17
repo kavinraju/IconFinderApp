@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconSetDetailsBinding
 import com.srilasaka.iconfinderapp.network.utils.State
@@ -254,13 +255,22 @@ class IconSetDetailsFragment : Fragment() {
      */
     private fun setBasicDetailsAdapter(baseDetailsModel: BasicDetailsModel) {
         basicDetailsAdapter = BasicDetailsAdapter(
-            BasicDetailsAdapter.BasicDetailsAdapterClickListener(onClickCreatorNameListener = { authorID: Int, licenseType: String ->
-                findNavController().navigate(
-                    IconSetDetailsFragmentDirections.actionIconSetDetailsFragmentToAuthorDetailsFragment(
-                        authorID,
-                        licenseType
+            BasicDetailsAdapter.BasicDetailsAdapterClickListener(onClickCreatorNameListener = { authorID: Int?, userID: Int?, licenseType: String ->
+                if (authorID == null && userID != null) {
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.sorry_no_data_available),
+                        Snackbar.LENGTH_LONG
                     )
-                )
+                        .setAction("Action", null).show()
+                } else if (authorID != null) {
+                    findNavController().navigate(
+                        IconSetDetailsFragmentDirections.actionIconSetDetailsFragmentToAuthorDetailsFragment(
+                            authorID,
+                            licenseType
+                        )
+                    )
+                }
             })
         )
 

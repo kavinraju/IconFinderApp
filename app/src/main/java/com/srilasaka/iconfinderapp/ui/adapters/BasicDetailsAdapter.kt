@@ -57,9 +57,9 @@ class BasicDetailsAdapter(private val clickListener: BasicDetailsAdapterClickLis
     /**
      * Click Listener
      */
-    class BasicDetailsAdapterClickListener(val onClickCreatorNameListener: (authorID: Int, licenseType: String) -> Unit) {
+    class BasicDetailsAdapterClickListener(val onClickCreatorNameListener: (authorID: Int?, userID: Int?, licenseType: String) -> Unit) {
 
-        fun onClickCreatorName(authorID: Int, licenseType: String) =
-            onClickCreatorNameListener(authorID, licenseType)
+        fun onClickCreatorName(authorID: Int?, userID: Int?, licenseType: String) =
+            onClickCreatorNameListener(authorID, userID, licenseType)
     }
 }

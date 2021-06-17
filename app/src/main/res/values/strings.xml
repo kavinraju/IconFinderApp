@@ -44,4 +44,5 @@
     <string name="home">Home</string>
     <string name="url">URL:</string>
     <string name="creator_name">Creator Name:</string>
+    <string name="sorry_no_data_available">Sorry, No data available!</string>
 </resources>
