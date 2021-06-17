@@ -58,5 +58,8 @@
         <argument
             android:name="licenseType"
             app:argType="string" />
+        <action
+            android:id="@+id/action_authorDetailsFragment_to_iconSetDetailsFragment"
+            app:destination="@id/iconSetDetailsFragment" />
     </fragment>
 </navigation>

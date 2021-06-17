@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
@@ -161,12 +162,12 @@ class AuthorDetailsFragment : Fragment() {
     private fun initAdapter(authorEntry: AuthorEntry) {
         iconSetAdapter =
             IconSetAdapter(IconSetAdapter.IconSetAdapterClickListener { iconSetID: Int, price: String ->
-                /*findNavController().navigate(
-                    HomeFragmentDirections.actionHomeFragmentToIconSetDetailsFragment(
+                findNavController().navigate(
+                    AuthorDetailsFragmentDirections.actionAuthorDetailsFragmentToIconSetDetailsFragment(
                         iconSetID,
                         price
                     )
-                )*/
+                )
             })
 
         setAuthorDetailsAdapter(authorEntry)
