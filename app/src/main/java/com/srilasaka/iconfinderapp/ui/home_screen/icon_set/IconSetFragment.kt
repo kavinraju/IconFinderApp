@@ -116,7 +116,7 @@ IconSetFragment : Fragment() {
         searchView.setOnClickListener {
             Snackbar.make(
                 binding.root,
-                getString(R.string.search_option_not_available_now),
+                getString(R.string.search_option_is_not_available_now),
                 Snackbar.LENGTH_LONG
             )
                 .setAction("Action", null).show()
