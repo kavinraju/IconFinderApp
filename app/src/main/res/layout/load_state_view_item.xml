@@ -18,7 +18,7 @@
             android:fontFamily="@font/montserrat_medium"
             android:gravity="center"
             android:text="@string/something_went_wrong"
-            android:textColor="@color/black"
+            android:textColor="@color/text_title_color"
             android:textSize="@dimen/dimen_16sp"
             android:textStyle="normal"
             app:layout_constraintBottom_toTopOf="@id/progress_bar"

@@ -97,7 +97,7 @@
                 android:layout_marginTop="@dimen/dimen_8dp"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@{model.name}"
-                android:textColor="@color/black"
+                android:textColor="@color/text_title_color"
                 android:textSize="@dimen/dimen_18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@id/material_card_view_icons_inner"

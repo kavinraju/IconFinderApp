@@ -10,6 +10,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="white_2">#FBFBFC</color>
     <color name="purple">#8C88F8</color>
+    <color name="white_grey">#9C9C9C</color>
 
     <color name="button_color">@color/purple</color>
     <color name="text_color">#5E6988</color>
@@ -20,5 +21,8 @@
     <color name="toolbarBackgroundColor">@color/white</color>
     <color name="ripple_color_grey">#593B3B3B</color>
     <color name="ripple_color_purple">@color/purple_500</color>
-
+    <color name="tab_layout_bg_color">@color/white</color>
+    <color name="toolbarTitleColor">@color/black</color>
+    <color name="text_title_color">@color/black</color>
+    <color name="status_bar_color">@color/white</color>
 </resources>

@@ -36,7 +36,8 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
                 R.id.iconSetDetailsFragment,
-                R.id.iconDetailsFragment -> {
+                R.id.iconDetailsFragment,
+                R.id.authorDetailsFragment -> {
                     binding.collapsingToolbarLayoutHomeScreen.apply {
                         title = ""
                     }
