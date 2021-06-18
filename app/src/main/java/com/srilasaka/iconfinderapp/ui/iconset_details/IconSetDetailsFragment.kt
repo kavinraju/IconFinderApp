@@ -121,7 +121,7 @@ class IconSetDetailsFragment : Fragment() {
         })
 
         // Refresh the iconsAdapter when button retry is clicked.
-        binding.loadStateViewItem.btnRetry.setOnClickListener { iconsAdapter.refresh() }
+        binding.loadStateViewItem.btnRetry.setOnClickListener { if(this::iconsAdapter.isInitialized) iconsAdapter.refresh() }
     }
 
     /**

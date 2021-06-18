@@ -128,7 +128,7 @@ class IconsFragment : Fragment() {
             savedInstanceState?.getString(LAST_SEARCH_QUERY_SAVED_INSTANCE_KEY) ?: DEFAULT_QUERY
         initSearch(queryString)
         // Refresh the adapter when button retry is clicked.
-        binding.loadStateViewItem.btnRetry.setOnClickListener { adapter.refresh() }
+        binding.loadStateViewItem.btnRetry.setOnClickListener { if(this::adapter.isInitialized) adapter.refresh() }
     }
 
     /**

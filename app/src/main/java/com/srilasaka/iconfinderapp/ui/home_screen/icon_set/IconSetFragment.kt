@@ -111,7 +111,7 @@ IconSetFragment : Fragment() {
         initAdapter()
         initSwipeToRefresh()
         // Refresh the adapter when button retry is clicked.
-        binding.loadStateViewItem.btnRetry.setOnClickListener { adapter.refresh() }
+        binding.loadStateViewItem.btnRetry.setOnClickListener { if(this::adapter.isInitialized) adapter.refresh() }
 
         searchView.setOnClickListener {
             Snackbar.make(
