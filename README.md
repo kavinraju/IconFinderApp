@@ -15,8 +15,10 @@ This application integrates the [IconFinder API](https://developer.iconfinder.co
 
 - Uses the network only data architecture as mentioned in [here](https://developer.android.com/topic/libraries/architecture/paging#support-different-data-arch). 
 - Network + Local Database implementation was started in [paging-3-with-pending-implementation-item-keyed-data-source](https://github.com/kavinraju/IconFinderApp/tree/paging-3-with-pending-implementation-item-keyed-data-source) branch but since I couldn't find the right implementation for this [IconSet IconFinder API](https://developer.iconfinder.com/reference/overview-1) API as it is an `ItemKeyedDataSource`. This query has been raised in [stackoverflow](https://stackoverflow.com/questions/67951960/paging-3-library-calls-the-load-method-recursively-with-loadtype-append?noredirect=1#comment120127150_67951960).
+
 - App's Navigation
 <img width="917" alt="Screenshot 2021-06-18 at 8 02 42 PM" src="https://user-images.githubusercontent.com/24537737/122577355-51124b00-d070-11eb-9ad5-27ceb0945a4f.png">
+
 - Shared Preferences for storing the user's filter option preference
 - Local ROOM Db to store the `offset` values while making the [search icons API call](https://developer.iconfinder.com/reference/search), so that by increasing the value fro 0 to 100 we can get different sets of data. For reference see the [API docs](https://developer.iconfinder.com/reference/search), [implementation](https://github.com/kavinraju/IconFinderApp/blob/main/app/src/main/java/com/srilasaka/iconfinderapp/data/SearchIconsPagingSource.kt). But further this project could be extended to load data from local DB using Network + Local Database architecture.
  
