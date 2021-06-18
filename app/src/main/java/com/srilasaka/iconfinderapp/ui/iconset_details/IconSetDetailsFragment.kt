@@ -27,9 +27,7 @@ import com.srilasaka.iconfinderapp.ui.models.BasicDetailsModel
 import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
 import com.srilasaka.iconfinderapp.ui.utils.UiModel
-import com.srilasaka.iconfinderapp.utils.downloadFile
-import com.srilasaka.iconfinderapp.utils.getPremium
-import com.srilasaka.iconfinderapp.utils.screenOrientationIsPortrait
+import com.srilasaka.iconfinderapp.utils.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -76,14 +74,13 @@ class IconSetDetailsFragment : Fragment() {
         // Get a reference to the binding object
         _binding = FragmentIconSetDetailsBinding.inflate(inflater, container, false)
 
-        setUIComponents()
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setUIComponents()
     }
 
     override fun onDestroyView() {
@@ -121,7 +118,7 @@ class IconSetDetailsFragment : Fragment() {
         })
 
         // Refresh the iconsAdapter when button retry is clicked.
-        binding.loadStateViewItem.btnRetry.setOnClickListener { iconsAdapter.refresh() }
+        binding.loadStateViewItem.btnRetry.setOnClickListener { if (this::iconsAdapter.isInitialized) iconsAdapter.refresh() }
     }
 
     /**
@@ -199,8 +196,8 @@ class IconSetDetailsFragment : Fragment() {
                     return if ((position == 0 && basicDetailsAdapter.getItemViewType(position) == R.layout.layout_basic_details)
                         || (iconsAdapter.getItemViewType(position) == R.layout.load_state_view_item && position == iconsAdapter.itemCount + 1)
                     )
-                        if (screenOrientationIsPortrait) 2 else 4
-                    else 1
+                        if (screenOrientationIsPortrait) SPAN_COUNT_2 else SPAN_COUNT_4
+                    else SPAN_COUNT_1
                 }
 
             }
@@ -218,30 +215,32 @@ class IconSetDetailsFragment : Fragment() {
 
             iconsAdapter.loadStateFlow.collectLatest { loadStates ->
 
-                // Show list is empty
-                val isEmptyList =
-                    loadStates.source.refresh is LoadState.NotLoading && iconsAdapter.itemCount == 0
-                showEmptyList(isEmptyList)
+                // Adding this check as collectLatest gets triggered when the _binding is null
+                if (_binding != null) {
+                    // Show list is empty
+                    val isEmptyList =
+                        loadStates.source.refresh is LoadState.NotLoading && iconsAdapter.itemCount == 0
+                    showEmptyList(isEmptyList)
 
-                // Only show the list if refresh succeeds
-                binding.rvIconsetIconsList.isVisible =
-                    loadStates.source.refresh is LoadState.NotLoading && !isEmptyList
+                    // Only show the list if refresh succeeds
+                    binding.rvIconsetIconsList.isVisible =
+                        loadStates.source.refresh is LoadState.NotLoading && !isEmptyList
 
-                // show the retry button if the initial load or refresh fails and display the error message
-                binding.loadStateViewItem.btnRetry.isVisible =
-                    loadStates.source.refresh is LoadState.Error
-                binding.loadStateViewItem.tvErrorDescription.isVisible =
-                    loadStates.source.refresh is LoadState.Error
+                    // show the retry button if the initial load or refresh fails and display the error message
+                    binding.loadStateViewItem.btnRetry.isVisible =
+                        loadStates.source.refresh is LoadState.Error
+                    binding.loadStateViewItem.tvErrorDescription.isVisible =
+                        loadStates.source.refresh is LoadState.Error
 
-                /*val errorState = loadStates.source.append as? LoadState.Error
-                    ?: loadStates.source.prepend as? LoadState.Error
-                    ?: loadStates.source.append as? LoadState.Error
-                    ?: loadStates.source.prepend as? LoadState.Error
+                    /*val errorState = loadStates.source.append as? LoadState.Error
+                        ?: loadStates.source.prepend as? LoadState.Error
+                        ?: loadStates.source.append as? LoadState.Error
+                        ?: loadStates.source.prepend as? LoadState.Error
 
-                errorState?.let {
-                    binding.loadStateViewItem.tvErrorDescription.text = it.error.toString()
-                }*/
-
+                    errorState?.let {
+                        binding.loadStateViewItem.tvErrorDescription.text = it.error.toString()
+                    }*/
+                }
 
             }
 

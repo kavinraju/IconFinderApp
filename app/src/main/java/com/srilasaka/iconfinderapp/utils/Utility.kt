@@ -3,7 +3,9 @@ package com.srilasaka.iconfinderapp.utils
 import android.app.DownloadManager
 import android.content.Context
 import android.content.res.Configuration
+import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
@@ -12,6 +14,12 @@ import com.srilasaka.iconfinderapp.ui.utils.DialogBoxes
 import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
 
+/**
+ * Declaring the SPAN COUNT values used in this application
+ */
+const val SPAN_COUNT_1 = 1
+const val SPAN_COUNT_2 = 2
+const val SPAN_COUNT_4 = 4
 
 /**
 Helper method to download a file provided with
@@ -114,4 +122,27 @@ fun getPremium(context: Context, filterScreen: FILTER_SCREEN): PREMIUM {
  */
 fun screenOrientationIsPortrait(context: Context): Boolean {
     return context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+}
+
+/**
+ * Helper method to check if the network connection is available or not.
+ */
+fun checkConnectionStatus(context: Context, connectionType: Int): Boolean {
+    val connMgr = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val network = connMgr.activeNetwork ?: return false
+        val activeNetwork = connMgr.getNetworkCapabilities(network) ?: return false
+        return when {
+            activeNetwork.hasTransport(connectionType) -> true
+            else -> false
+        }
+    } else {
+        connMgr.allNetworks.forEach { network ->
+            connMgr.getNetworkInfo(network)?.apply {
+                return type == connectionType
+            }
+        }
+    }
+    return false
 }

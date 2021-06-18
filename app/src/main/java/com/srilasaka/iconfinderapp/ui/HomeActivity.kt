@@ -41,6 +41,7 @@ class HomeActivity : AppCompatActivity() {
                     binding.collapsingToolbarLayoutHomeScreen.apply {
                         title = ""
                     }
+                    binding.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_ios_24)
                 }
 
             }

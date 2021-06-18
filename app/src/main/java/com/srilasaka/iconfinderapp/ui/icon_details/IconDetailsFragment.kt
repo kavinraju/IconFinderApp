@@ -57,14 +57,13 @@ class IconDetailsFragment : Fragment() {
         // Get a reference to the binding object
         _binding = FragmentIconDetailsBinding.inflate(inflater, container, false)
 
-        setUIComponents()
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setUIComponents()
     }
 
     override fun onDestroyView() {
