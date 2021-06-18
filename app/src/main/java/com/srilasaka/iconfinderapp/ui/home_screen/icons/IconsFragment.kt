@@ -77,9 +77,12 @@ class IconsFragment : Fragment() {
         // Get a reference to the binding object
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_icons, container, false)
 
-        setUIComponents(savedInstanceState)
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUIComponents(savedInstanceState)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -128,7 +131,7 @@ class IconsFragment : Fragment() {
             savedInstanceState?.getString(LAST_SEARCH_QUERY_SAVED_INSTANCE_KEY) ?: DEFAULT_QUERY
         initSearch(queryString)
         // Refresh the adapter when button retry is clicked.
-        binding.loadStateViewItem.btnRetry.setOnClickListener { if(this::adapter.isInitialized) adapter.refresh() }
+        binding.loadStateViewItem.btnRetry.setOnClickListener { if (this::adapter.isInitialized) adapter.refresh() }
     }
 
     /**

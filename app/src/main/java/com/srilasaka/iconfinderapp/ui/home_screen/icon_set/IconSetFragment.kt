@@ -62,7 +62,6 @@ IconSetFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,9 +69,13 @@ IconSetFragment : Fragment() {
     ): View? {
         // Get a reference to the binding object
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_icon_set, container, false)
-
-        setUIComponents()
         return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUIComponents()
     }
 
     override fun onResume() {
