@@ -29,7 +29,7 @@
         <item name="tabPaddingBottom">-15dp</item>
 
         <item name="tabTextColor">@color/text_color</item>
-        <item name="tabSelectedTextColor">@color/button_color</item>
+        <item name="tabSelectedTextColor">@color/text_color</item>
     </style>
 
     <style name="Widget.App.TabLayout.Title" parent="@android:style/TextAppearance.Widget.TabWidget">
