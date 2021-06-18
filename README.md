@@ -1,6 +1,8 @@
 # IconFinderApp
 This application integrates the [IconFinder API](https://developer.iconfinder.com/reference/overview-1) following the [best practices](https://developer.android.com/jetpack/guide#common-principles) in Android. 
 
+##### Check out this [documentation as a GitHub Pages here](https://kavinraju.github.io/IconFinderApp/).
+
 #### Currently it has 5 screens
 1. IconSet List
 2. Icons List (searchable)
