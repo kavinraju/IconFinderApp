@@ -10,6 +10,9 @@ This application integrates the [IconFinder API](https://developer.iconfinder.co
 4. Icon Details with an option to download the icon
 5. Author details along with the list of IconSet associated with the author
 
+### Project set up
+This project <i><b>requires you to get the API KEY</b></i> from [IconFinder](https://developer.iconfinder.com/reference/overview-1) and add it in the `gradle.properties` file at the [root](https://github.com/kavinraju/IconFinderApp) level of this project. Use the variable name as `API_KEY` so that project builds successfully. In the app level `build.gradle` file, we access this `API_KEY` to build as a BuildConfigField `buildConfigField("String", "API_KEY", API_KEY)` and it's referenced from the code as `BuildConfig.API_KEY`.
+
 ### Architecture used
 <a href="https://developer.android.com/topic/libraries/architecture/paging#support-different-data-arch"><img src="https://developer.android.com/topic/libraries/architecture/images/paging-library-data-flow.png" width="350px"/>Source</a>
 
