@@ -1,7 +1,9 @@
 package com.srilasaka.iconfinderapp.utils
 
+import android.Manifest
 import android.app.DownloadManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -9,6 +11,8 @@ import android.os.Build
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.srilasaka.iconfinderapp.network.utils.EndPoints
 import com.srilasaka.iconfinderapp.ui.utils.DialogBoxes
 import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
@@ -145,4 +149,31 @@ fun checkConnectionStatus(context: Context, connectionType: Int): Boolean {
         }
     }
     return false
+}
+
+/**
+ * Helper function to check the storage permission
+ */
+fun Fragment.checkStoragePermission(requestCode: Int): Boolean {
+    return if (ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        != PackageManager.PERMISSION_GRANTED
+    ) {
+        requestPermissions(
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ),
+            requestCode
+        )
+        false
+    } else {
+        true
+    }
 }

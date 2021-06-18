@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconsBinding
 import com.srilasaka.iconfinderapp.ui.adapters.IconsAdapter
@@ -27,13 +28,12 @@ import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentDirections
 import com.srilasaka.iconfinderapp.ui.home_screen.HomeFragmentViewModel
 import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
-import com.srilasaka.iconfinderapp.utils.downloadFile
-import com.srilasaka.iconfinderapp.utils.getPremium
-import com.srilasaka.iconfinderapp.utils.openDialogBox
-import com.srilasaka.iconfinderapp.utils.screenOrientationIsPortrait
+import com.srilasaka.iconfinderapp.utils.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+private const val CHECK_STORAGE_PERMISSION_CODE = 100
 
 class IconsFragment : Fragment() {
 
@@ -204,12 +204,21 @@ class IconsFragment : Fragment() {
     private fun initAdapter() {
         adapter = IconsAdapter(IconsAdapter.IconsAdapterClickListener(
             downloadClickListener = { downloadUrl, iconId ->
-                downloadFile(
-                    context,
-                    downloadManager,
-                    downloadUrl,
-                    iconId.toString()
-                )
+                if (checkStoragePermission(CHECK_STORAGE_PERMISSION_CODE)) {
+                    downloadFile(
+                        context,
+                        downloadManager,
+                        downloadUrl,
+                        iconId.toString()
+                    )
+                } else {
+
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.storage_permission_not_available),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             },
             iconItemClickListener = { iconID ->
                 findNavController().navigate(

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IconFinderApp</string>
+    <string name="app_name">Icon Finder</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -46,4 +46,5 @@
     <string name="creator_name">Creator Name:</string>
     <string name="sorry_no_data_available">Sorry, No data available!</string>
     <string name="search_option_is_not_available_now">Search option is not available now.</string>
+    <string name="storage_permission_not_available">Storage permission not available</string>
 </resources>

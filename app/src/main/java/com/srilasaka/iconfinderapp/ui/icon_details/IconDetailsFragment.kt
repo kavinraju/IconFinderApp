@@ -16,7 +16,10 @@ import com.srilasaka.iconfinderapp.R
 import com.srilasaka.iconfinderapp.databinding.FragmentIconDetailsBinding
 import com.srilasaka.iconfinderapp.network.utils.State
 import com.srilasaka.iconfinderapp.ui.adapters.BasicDetailsAdapter
+import com.srilasaka.iconfinderapp.utils.checkStoragePermission
 import com.srilasaka.iconfinderapp.utils.downloadFile
+
+private const val CHECK_STORAGE_PERMISSION_CODE = 100
 
 /**
  * [Fragment] to display the details od the IconSet from [IconsFragment].
@@ -102,12 +105,20 @@ class IconDetailsFragment : Fragment() {
 
         // Download the file when Download button is clicked.
         binding.btnIconDownload.setOnClickListener {
-            downloadFile(
-                context,
-                downloadManager,
-                viewModel.iconDetails.value?.format_64_download_url,
-                viewModel.iconDetails.value?.icon_id.toString()
-            )
+            if (checkStoragePermission(CHECK_STORAGE_PERMISSION_CODE)) {
+                downloadFile(
+                    context,
+                    downloadManager,
+                    viewModel.iconDetails.value?.format_64_download_url,
+                    viewModel.iconDetails.value?.icon_id.toString()
+                )
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.storage_permission_not_available),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
         }
 
         // Set the clickListener to the R.layout.layout_basic_details
