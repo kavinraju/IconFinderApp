@@ -242,6 +242,7 @@ class IconsFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest { loadStates ->
 
+                // Adding this check as collectLatest gets triggered when the _binding is null
                 if (_binding != null) {
                     // Show the Swipe Refresh when the adapter LoadState is Loading
                     binding.swipeRefresh.isRefreshing =

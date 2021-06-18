@@ -94,7 +94,7 @@
             android:textSize="@dimen/dimen_14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/tv_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_details_type_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_type" />
 
         <TextView
             android:id="@+id/tv_creator_name"
@@ -174,7 +174,7 @@
             android:textSize="@dimen/dimen_14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/tv_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_website_url_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_website_url" />
 
         <TextView
             android:id="@+id/tv_license_type"
@@ -202,7 +202,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/iv_details_premium_free"
             app:layout_constraintStart_toStartOf="@id/tv_details_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_license_type_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_license_type" />
 
         <TextView
             android:id="@+id/tv_info_description"

@@ -23,6 +23,8 @@ import com.srilasaka.iconfinderapp.ui.adapters.*
 import com.srilasaka.iconfinderapp.ui.utils.FILTER_SCREEN
 import com.srilasaka.iconfinderapp.ui.utils.PREMIUM
 import com.srilasaka.iconfinderapp.ui.utils.UiModel
+import com.srilasaka.iconfinderapp.utils.SPAN_COUNT_1
+import com.srilasaka.iconfinderapp.utils.SPAN_COUNT_2
 import com.srilasaka.iconfinderapp.utils.getPremium
 import com.srilasaka.iconfinderapp.utils.screenOrientationIsPortrait
 import kotlinx.coroutines.Job
@@ -190,9 +192,17 @@ class AuthorDetailsFragment : Fragment() {
                         // entire screen
                         return if ((position == 0 && authorDetailsAdapter.getItemViewType(position) == R.layout.layout_author_details)
                             || iconSetAdapter.getItemViewType(position) == R.layout.load_state_view_item && position == iconSetAdapter.itemCount + 1
-                        )
-                            if (screenOrientationIsPortrait) 1 else 2
-                        else 1
+                        ) {
+                            if (screenOrientationIsPortrait)
+                                SPAN_COUNT_1
+                            else {
+                                // In landscape mode set the span value of Author details item to be 1
+                                if (position == 0 && authorDetailsAdapter.getItemViewType(position) == R.layout.layout_author_details)
+                                    SPAN_COUNT_1
+                                else
+                                    SPAN_COUNT_2
+                            }
+                        } else SPAN_COUNT_1
                     }
 
                 }

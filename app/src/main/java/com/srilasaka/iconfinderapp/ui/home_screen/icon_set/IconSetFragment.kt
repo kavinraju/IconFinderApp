@@ -111,7 +111,7 @@ IconSetFragment : Fragment() {
         initAdapter()
         initSwipeToRefresh()
         // Refresh the adapter when button retry is clicked.
-        binding.loadStateViewItem.btnRetry.setOnClickListener { if(this::adapter.isInitialized) adapter.refresh() }
+        binding.loadStateViewItem.btnRetry.setOnClickListener { if (this::adapter.isInitialized) adapter.refresh() }
 
         searchView.setOnClickListener {
             Snackbar.make(
@@ -192,39 +192,41 @@ IconSetFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest { loadStates ->
 
-                // Show the Swipe Refresh when the adapter LoadState is Loading
-                binding.swiperefresh.isRefreshing =
-                    loadStates.source.refresh is LoadState.Loading
-                Log.d(TAG, "loadStateFlow loadStates = $loadStates")
-                Log.d(
-                    TAG,
-                    "loadStateFlow loadStates.mediator?.refresh = ${loadStates.source.refresh}"
-                )
+                // Adding this check as collectLatest gets triggered when the _binding is null
+                if (_binding != null) {
+                    // Show the Swipe Refresh when the adapter LoadState is Loading
+                    binding.swiperefresh.isRefreshing =
+                        loadStates.source.refresh is LoadState.Loading
+                    Log.d(TAG, "loadStateFlow loadStates = $loadStates")
+                    Log.d(
+                        TAG,
+                        "loadStateFlow loadStates.mediator?.refresh = ${loadStates.source.refresh}"
+                    )
 
-                // Show list is empty
-                val isEmptyList =
-                    loadStates.source.refresh is LoadState.NotLoading && adapter.itemCount == 0
-                showEmptyList(isEmptyList)
+                    // Show list is empty
+                    val isEmptyList =
+                        loadStates.source.refresh is LoadState.NotLoading && adapter.itemCount == 0
+                    showEmptyList(isEmptyList)
 
-                // Only show the list if refresh succeeds
-                binding.rvIconSetList.isVisible =
-                    loadStates.source.refresh is LoadState.NotLoading && !isEmptyList
+                    // Only show the list if refresh succeeds
+                    binding.rvIconSetList.isVisible =
+                        loadStates.source.refresh is LoadState.NotLoading && !isEmptyList
 
-                // show the retry button if the initial load or refresh fails and display the error message
-                binding.loadStateViewItem.btnRetry.isVisible =
-                    loadStates.source.refresh is LoadState.Error || isEmptyList
-                binding.loadStateViewItem.tvErrorDescription.isVisible =
-                    loadStates.source.refresh is LoadState.Error || isEmptyList
+                    // show the retry button if the initial load or refresh fails and display the error message
+                    binding.loadStateViewItem.btnRetry.isVisible =
+                        loadStates.source.refresh is LoadState.Error || isEmptyList
+                    binding.loadStateViewItem.tvErrorDescription.isVisible =
+                        loadStates.source.refresh is LoadState.Error || isEmptyList
 
-                /*val errorState = loadStates.source.append as? LoadState.Error
+                    /*val errorState = loadStates.source.append as? LoadState.Error
                     ?: loadStates.source.prepend as? LoadState.Error
                     ?: loadStates.source.append as? LoadState.Error
                     ?: loadStates.source.prepend as? LoadState.Error
 
-                errorState?.let {
-                    binding.loadStateViewItem.tvErrorDescription.text = it.error.toString()
-                }*/
-
+                    errorState?.let {
+                        binding.loadStateViewItem.tvErrorDescription.text = it.error.toString()
+                    }*/
+                }
 
             }
         }
