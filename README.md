@@ -70,3 +70,6 @@ This project <i><b>requires you to get the API KEY</b></i> from [IconFinder](htt
 - [Material Design](https://material.io/components?platform=android)
 - [Retrofit](https://square.github.io/retrofit/) for making API calls
 - [OkHttp interceptor](https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor) for logging the API responses
+
+### License
+[License Zero Noncommercial Public License](https://licensezero.com/licenses/noncommercial) by [License Zero](https://licensezero.com/) &#9400; [Kavin Raju S](https://github.com/kavinraju/I)
