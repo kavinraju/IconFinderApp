@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 Kavin Raju S
+ * Licensed under the Zero Noncommercial Public License v1.0
+ *
+ *
+ */
+
 package com.srilasaka.iconfinderapp.local_database.icon_set_details_table
 
 import androidx.room.Entity

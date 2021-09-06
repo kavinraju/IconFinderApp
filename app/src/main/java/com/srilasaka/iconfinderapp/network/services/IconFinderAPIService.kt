@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 Kavin Raju S
+ * Licensed under the Zero Noncommercial Public License v1.0
+ *
+ *
+ */
+
 package com.srilasaka.iconfinderapp.network.services
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
