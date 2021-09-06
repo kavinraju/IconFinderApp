@@ -1,3 +1,10 @@
+<!--
+  ~ Copyright (C) 2021 Kavin Raju S
+  ~ Licensed under the Zero Noncommercial Public License v1.0
+  ~
+  ~
+  -->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.IconFinderApp" parent="Theme.MaterialComponents.DayNight">

@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2021 Kavin Raju S
+  ~ Licensed under the Zero Noncommercial Public License v1.0
+  ~
+  ~
+  -->
+
 <resources>
     <color name="purple">#8C88F8</color>
     <color name="white_grey">#E1E1E1</color>

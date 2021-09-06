@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2021 Kavin Raju S
+ * Licensed under the Zero Noncommercial Public License v1.0
+ *
+ *
+ */
+
 package com.srilasaka.iconfinderapp.ui.home_screen
 
 import android.view.LayoutInflater
